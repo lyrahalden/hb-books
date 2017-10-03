@@ -1,0 +1,23 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+Goals for today:
+- make spider to get titles, author, picture url, average rating from list of highly rated books
+- modify spider to go to next page and get genre info
+
+11am
+    scraped book info from list page
+12pm
+
+1-2 lunch
+
+3pm
+    seeded books table in database!!!
+    my scraping method works
+    now I need to get the genre info
+
+6pm
+    rewrote model to include a genre class and a books_genres association table
+    reseeded books and genres table in database
+    for some reason, didn't seed anything in books_genres table - how do I get it to do that?
