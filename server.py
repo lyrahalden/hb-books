@@ -2,12 +2,12 @@
 
 from jinja2 import StrictUndefined
 
-# from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import (Flask, render_template, redirect, request, flash,
                    session)
 
-from model import Book, connect_to_db, db
+from model import Book, Genre, BookGenre, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -20,11 +20,11 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-# @app.route('/')
-# def index():
-#     """Homepage."""
+@app.route('/')
+def index():
+    """Homepage."""
 
-#     return render_template('homepage.html')
+    return render_template('homepage.html')
 
 
 # @app.route("/users")
@@ -35,12 +35,12 @@ app.jinja_env.undefined = StrictUndefined
 #     return render_template("all_users.html", users=users)
 
 
-# @app.route("/movies")
-# def movie_list():
-#     """Show list of movies."""
+@app.route("/books")
+def book_list():
+    """Show list of books."""
 
-#     movies = Movie.query.order_by('title').all()
-#     return render_template("all_movies.html", movies=movies)
+    books = Book.query.order_by('title').all()
+    return render_template("all_books.html", books=books)
 
 
 # @app.route("/movies/<some_id>")
@@ -61,32 +61,32 @@ app.jinja_env.undefined = StrictUndefined
 #     return render_template("user_page.html", user=user)
 
 
-# @app.route("/register")
-# def reg_form():
-#     """Show registration form"""
+@app.route("/register")
+def reg_form():
+    """Show registration form"""
 
-#     return render_template("registration_form.html")
+    return render_template("registration_form.html")
 
 
-# @app.route("/register", methods=["POST"])
-# def confirm_registration():
-#     """Confirms registration"""
+@app.route("/register", methods=["POST"])
+def confirm_registration():
+    """Confirms registration"""
 
-#     email = request.form.get("email")
-#     password = request.form.get("password")
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-#     duplicates = db.session.query(User).filter_by(email=email).all()
+    duplicates = db.session.query(User).filter_by(email=email).all()
 
-#     if duplicates:
-#         flash("This email is already registered. Please try again with a different email.")
-#     else:
-#         new_user = User(email=email, password=password)
-#         db.session.add(new_user)
-#         db.session.commit()
-#         flash("You have been registered and logged in! Yay!")
-#         session['email'] = email
+    if duplicates:
+        flash("This email is already registered. Please try again with a different email.")
+    else:
+        new_user = User(email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash("You have been registered and logged in! Yay!")
+        session['email'] = email
 
-#     return redirect("/")
+    return redirect("/")
 
 
 # @app.route("/login", methods=["POST"])

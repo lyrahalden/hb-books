@@ -1,6 +1,6 @@
-"""Utility file to seed books database from goodreads data"""
+"""Utility file to seed books database from goodreads data and sample user data"""
 
-from sqlalchemy import func
+# from sqlalchemy import func
 from model import Book, Genre, BookGenre
 import json
 # from model import Rating
@@ -18,36 +18,45 @@ def load_books():
     # we won't be trying to add duplicate data
     Book.query.delete()
     Genre.query.delete()
+    BookGenre.query.delete()
 
     # Read scraped books.json file and turn json into python dictionary
-    json_string = open("scrapingtools/books.json").read()
+    json_string = open("seed_data/books.json").read()
     books_dict = json.loads(json_string)
 
-    genres_list = []
-    genres_dict = {}
+    #create empty dict that will keep track of all the unique genres
+    all_genres = {}
 
-    for item in books_dict:
-        title = item['title'].strip()
-        author = item['author']
-        rating = item['rating']
-        pic_url = item['pic_url']
+    #for each book in our json file, assign title, author, rating, pic_url attributes
+    for book in books_dict:
+        title = book['title'].strip()
+        author = book['author']
+        rating = book['rating']
+        pic_url = book['pic_url']
 
-
+        #create empty list representing all genres for this book
         genres_for_this_book = []
 
-        for genre in item['genres']:
-            if genre not in genres_list:
-                genres_list.append(genre)
+        #loop through the genres for a particular book
+        for genre in book['genres']:
+
+            # if genre doesn't already exist in database:
+            if genre not in all_genres:
+
+                #make a new Genre object and add that Genre object to the database
                 genre_obj = Genre(name=genre)
                 db.session.add(genre_obj)
-                genres_dict[genre] = genre_obj
 
+                #add a string representing the genre and its Genre object to the dict all_genres as a key-value pair
+                all_genres[genre] = genre_obj
 
-            genres_for_this_book.append(genres_dict[genre])
+            #regardless of whether this exists in the database, add the corresponding Genre object to the list of genres for this book
+            genres_for_this_book.append(all_genres[genre])
 
-        book = Book(title=title, author=author, rating=rating, pic_url=pic_url, genres=genres_for_this_book)
+        #after the genre loop is complete, create a Book object and pass in all attributes, including a list of genres for this book
+        book_obj = Book(title=title, author=author, rating=rating, pic_url=pic_url, genres=genres_for_this_book)
 
-        db.session.add(book)
+        db.session.add(book_obj)
 
     db.session.commit()
     print "Done!"
@@ -122,6 +131,8 @@ def load_books():
 
 if __name__ == "__main__":
     connect_to_db(app)
+
+    db.drop_all()
 
     # In case tables haven't been created, create them
     db.create_all()

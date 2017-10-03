@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %} TITLE GOES HERE {% endblock %}</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+    <!-- Show flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <div class="alert alert-warning">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    </div>
+
+    <div id="logout">
+
+        <form action="/logout">
+            <input type="submit" value="Logout">
+        </form>
+
+  {% block content %} CONTENT GOES HERE {% endblock %}
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="/static/ajax.js"></script>
+
+</body>
+</html>

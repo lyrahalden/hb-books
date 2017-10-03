@@ -1,4 +1,0 @@
-flask-sqlalchemy
-flask-restless
-psycopg2
-requests

@@ -1,0 +1,15 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+Goals for today:
+- clarify reseeding mechanics of database
+- make flask routes and templates for mvp
+
+12pm
+    -commented up the seeding of the association table
+    - got it code reviewed
+    - started building flask routes and templates
+    - created User, Rating models and tables
+    - created sample users.csv
+

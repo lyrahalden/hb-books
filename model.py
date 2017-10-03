@@ -12,6 +12,40 @@ db = SQLAlchemy()
 ##############################################################################
 # Model definitions
 
+class User(db.Model):
+    """ Users of the site"""
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<User user_id=%s name=%s>" % (self.user_id, self.name)
+
+
+class Rating(db.Model):
+    """Ratings users have given a book"""
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+
+    book = db.relationship('Book', backref='ratings')
+    user = db.relationship('User', backref='ratings')
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Rating rating_id=%s user_id=%s book_id=%s score=%s>" % (
+            self.rating_id, self.user_id, self.book_id, self.score)
+
+
 class Book(db.Model):
     """Book info scraped from Goodreads."""
 
@@ -56,7 +90,6 @@ class Genre(db.Model):
         """Provide helpful representation when printed."""
 
         return "<Genre genre_id=%s name=%s>" % (self.genre_id, self.name)
-
 
 
 ##############################################################################
