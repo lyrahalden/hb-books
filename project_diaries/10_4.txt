@@ -13,3 +13,28 @@ Goals for today:
     - created User, Rating models and tables
     - created sample users.csv
 
+1-2 lunch
+
+2pm
+    got homepage and all_books page working
+    git committed
+    seeded users and ratings table w/sample data
+    performed sqlalchemy queries to be sure they worked
+
+3pm
+    made all_books page readable
+    got user profile page working
+    created UserGenre model and sql table
+    changed name of 'rating' on book object to 'avg_rating' to differentiate from Rating object
+    re-seeded database
+
+4pm
+    git committed
+
+
+
+
+To do:
+    modify all books page to show the author, small pic, average goodreads rating, and a "rate" button
+    edit name of super long book names to be on multiple lines
+

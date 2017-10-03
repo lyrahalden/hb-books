@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block title %} User Profile Page {% endblock %}
+
+
+{% block content %}
+<hr>
+<br>
+Welcome {{ user.name }}!
+<br>
+<br>
+Here are the books you have rated so far-
+<ul>
+{% for rating in user.ratings if user.ratings%}
+    <li>Rated the book {{ rating.book.title }}</a>: {{ rating.score }}</li>
+{% endfor %}
+</ul>
+<br><br>
+Take the time to let us know which genres are your favorite! It'll make our recommendations better.
+
+{% endblock %}

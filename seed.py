@@ -1,10 +1,8 @@
 """Utility file to seed books database from goodreads data and sample user data"""
 
-# from sqlalchemy import func
-from model import Book, Genre, BookGenre
+from sqlalchemy import func
+from model import Book, Genre, BookGenre, User, Rating
 import json
-# from model import Rating
-# from model import Movie
 
 from model import connect_to_db, db
 from server import app
@@ -13,6 +11,8 @@ from server import app
 
 def load_books():
     """Load books and genres from books.json into database."""
+
+    print "Books and Genres"
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate data
@@ -31,7 +31,7 @@ def load_books():
     for book in books_dict:
         title = book['title'].strip()
         author = book['author']
-        rating = book['rating']
+        avg_rating = book['rating']
         pic_url = book['pic_url']
 
         #create empty list representing all genres for this book
@@ -54,7 +54,7 @@ def load_books():
             genres_for_this_book.append(all_genres[genre])
 
         #after the genre loop is complete, create a Book object and pass in all attributes, including a list of genres for this book
-        book_obj = Book(title=title, author=author, rating=rating, pic_url=pic_url, genres=genres_for_this_book)
+        book_obj = Book(title=title, author=author, avg_rating=avg_rating, pic_url=pic_url, genres=genres_for_this_book)
 
         db.session.add(book_obj)
 
@@ -62,71 +62,64 @@ def load_books():
     print "Done!"
 
 
-# def load_genres():
-#     """Load genres from books.json into database."""
+def load_users():
+    """Load sample users from users.csv into database."""
 
-#     print "Genres"
+    print "Users"
 
-#     Genre.query.delete()
+    User.query.delete()
 
-#     json_string = open("scrapingtools/books.json").read()
-#     books_dict = json.loads(json_string)
+    for row in open("seed_data/users.csv"):
+        row = row.rstrip()
+        rows = row.split("|")
 
-#         movie_id = rows[0]
-#         title = rows[1]
-#         released_str = rows[2]
-#         imdb_url = rows[4]
+        user_id = rows[0]
+        name = rows[1]
+        email = rows[2]
+        password = rows[3]
 
-#         if title:
-#             title = title[:-7]
-#         else:
-#             continue
+        user = User(user_id=user_id, name=name, email=email, password=password)
 
-#         if released_str:
-#             released_at = datetime.strptime(released_str, "%d-%b-%Y")
-#         else:
-#             released_at = None
+        db.session.add(user)
 
-#         movie = Movie(movie_id=movie_id, title=title, released_at=released_at, imdb_url=imdb_url)
-
-#         db.session.add(movie)
-
-#     db.session.commit()
+    db.session.commit()
+    print "Done!"
 
 
-# def load_ratings():
-#     """Load ratings from u.data into database."""
+def load_ratings():
+    """Load ratings from ratings.csv into database."""
 
-#     print "Ratings"
+    print "Ratings"
 
-#     Rating.query.delete()
+    Rating.query.delete()
 
-#     for row in open("seed_data/u.data"):
-#         row = row.rstrip()
-#         rows = row.split("\t")
+    for row in open("seed_data/ratings.csv"):
+        row = row.rstrip()
+        rows = row.split("|")
 
-#         user_id = rows[0]
-#         movie_id = rows[1]
-#         score = rows[2]
+        user_id = rows[0]
+        book_id = rows[1]
+        score = rows[2]
 
-#         rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+        rating = Rating(user_id=user_id, book_id=book_id, score=score)
 
-#         db.session.add(rating)
+        db.session.add(rating)
 
-#     db.session.commit()
+    db.session.commit()
+    print "Done!"
 
 
-# def set_val_user_id():
-#     """Set value for the next user_id after seeding database"""
+def set_val_user_id():
+    """Set value for the next user_id after seeding database"""
 
-#     # Get the Max user_id in the database
-#     result = db.session.query(func.max(User.user_id)).one()
-#     max_id = int(result[0])
+    # Get the Max user_id in the database
+    result = db.session.query(func.max(User.user_id)).one()
+    max_id = int(result[0])
 
-#     # Set the value for the next user_id to be max_id + 1
-#     query = "SELECT setval('users_user_id_seq', :new_id)"
-#     db.session.execute(query, {'new_id': max_id + 1})
-#     db.session.commit()
+    # Set the value for the next user_id to be max_id + 1
+    query = "SELECT setval('users_user_id_seq', :new_id)"
+    db.session.execute(query, {'new_id': max_id + 1})
+    db.session.commit()
 
 
 if __name__ == "__main__":
@@ -139,6 +132,6 @@ if __name__ == "__main__":
 
     # Import different types of data
     load_books()
-    # load_movies()
-    # load_ratings()
-    # set_val_user_id()
+    load_users()
+    load_ratings()
+    set_val_user_id()

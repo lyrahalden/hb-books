@@ -5,14 +5,17 @@
 {% block content %}
 
     <h2>Books</h2>
-    <ul>
       {% for book in books %}
-          <li>
-              <a href="/books/{{ book.book_id }}">
-                {{ book.title}}
-              </a>
-          </li>
+      <div class="bookDiv">
+          {{ book.title }}
+          <br>
+          {{ book.author }}
+          <br>
+          Average Goodreads Rating: {{ book.rating }}
+          <br>
+          <img class="bookImg" src={{ book.pic_url}}>
+          <br>
+      </div>
       {% endfor %}
-    </ul>
 
 {% endblock %}

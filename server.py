@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session)
 
-from model import Book, Genre, BookGenre, connect_to_db, db
+from model import Book, Genre, BookGenre, User, Rating, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -39,7 +39,7 @@ def index():
 def book_list():
     """Show list of books."""
 
-    books = Book.query.order_by('title').all()
+    books = Book.query.order_by('author').all()
     return render_template("all_books.html", books=books)
 
 
@@ -71,7 +71,7 @@ def reg_form():
 @app.route("/register", methods=["POST"])
 def confirm_registration():
     """Confirms registration"""
-
+    name = request.form.get("name")
     email = request.form.get("email")
     password = request.form.get("password")
 
@@ -80,7 +80,7 @@ def confirm_registration():
     if duplicates:
         flash("This email is already registered. Please try again with a different email.")
     else:
-        new_user = User(email=email, password=password)
+        new_user = User(name=name, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
         flash("You have been registered and logged in! Yay!")
@@ -89,70 +89,70 @@ def confirm_registration():
     return redirect("/")
 
 
-# @app.route("/login", methods=["POST"])
-# def log_in():
-#     """Logs a user in"""
+@app.route("/login", methods=["POST"])
+def log_in():
+    """Logs a user in"""
 
-#     email = request.form.get("email")
-#     password = request.form.get("password")
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-#     user = db.session.query(User).filter_by(email=email).first()
+    user = db.session.query(User).filter_by(email=email).first()
 
-#     try:
-#         user.user_id
+    try:
+        user.user_id
 
-#         if user and password == user.password:
-#             session['email'] = email
-#             flash("You have been logged in!")
-#             return render_template("user_page.html", user=user)
-#         else:
-#             flash("Login failed. Email or password was not correct.")
-#             return redirect("/")
+        if user and password == user.password:
+            session['email'] = email
+            flash("You have been logged in!")
+            return render_template("user_page.html", user=user)
+        else:
+            flash("Login failed. Email or password was not correct.")
+            return redirect("/")
 
-#     except AttributeError:
-#         flash("Login failed. Email or password was not correct.")
-#         return redirect("/")
-
-
-# @app.route("/rate", methods=["POST"])
-# def rate_movie():
-#     """Passes rating for movie"""
-
-#     movie_id = request.form.get("movie")
-#     score = request.form.get("score")
-#     movie = Movie.query.get(movie_id)
-
-#     try:
-#         email = session['email']
-
-#         user = User.query.filter_by(email=email).first()
-#         user_id = user.user_id
-#         rating = Rating.query.filter(Rating.user_id == user_id, Rating.movie_id == movie_id).first()
-#         if rating:
-#             rating.score = score
-#             db.session.commit()
-#             flash("You have updated your rating for " + movie.title + " to a " + score + ".")
-#             return redirect("/movies/" + movie_id)
-#         else:
-#             new_rating = Rating(movie_id=movie_id, user_id=user_id, score=score)
-#             db.session.add(new_rating)
-#             db.session.commit()
-#             flash("You have rated " + movie.title + " as a " + score + ".")
-#             return redirect("/movies/" + movie_id)
-
-#     except KeyError:
-#         flash("Not a valid user logged in!")
-#         return redirect("/")
+    except AttributeError:
+        flash("Login failed. Email or password was not correct.")
+        return redirect("/")
 
 
-# @app.route("/logout")
-# def log_out():
-#     """Logs the user out"""
+@app.route("/rate", methods=["POST"])
+def rate_book():
+    """Passes rating for book"""
 
-#     del session['email']
-#     flash("You are logged out!")
+    book_id = request.form.get("book")
+    score = request.form.get("score")
+    book = Book.query.get(book_id)
+#needs to be fixed
+    try:
+        email = session['email']
 
-#     return redirect("/")
+        user = User.query.filter_by(email=email).first()
+        user_id = user.user_id
+        rating = Rating.query.filter(Rating.user_id == user_id, Rating.book_id == book_id).first()
+        if rating:
+            rating.score = score
+            db.session.commit()
+            flash("You have updated your rating for " + book.title + " to a " + score + ".")
+            return redirect("/movies/" + movie_id)
+        else:
+            new_rating = Rating(movie_id=movie_id, user_id=user_id, score=score)
+            db.session.add(new_rating)
+            db.session.commit()
+            flash("You have rated " + movie.title + " as a " + score + ".")
+            return redirect("/movies/" + movie_id)
+
+    except KeyError:
+        flash("Not a valid user logged in!")
+        return redirect("/")
+
+
+@app.route("/logout")
+def log_out():
+    """Logs the user out"""
+
+    del session['email']
+    flash("You are logged out!")
+
+    return redirect("/")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
