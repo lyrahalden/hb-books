@@ -52,13 +52,18 @@ def book_list():
 #     return render_template("movie_page.html", movie=movie)
 
 
-# @app.route("/users/<some_id>")
-# def user_details(some_id):
-#     """Shows user details."""
+@app.route("/users/<some_id>")
+def user_details(some_id):
+    """Shows user details."""
 
-#     user = User.query.get(some_id)
+    user = User.query.get(some_id)
 
-#     return render_template("user_page.html", user=user)
+    if user and session['email'] == user.email:
+        genres = Genre.query.all()
+        return render_template("user_page.html", user=user, genres=genres)
+    else:
+        flash("Sorry, you must log in to your account to view user details.")
+        return redirect("/")
 
 
 @app.route("/register")
@@ -121,7 +126,7 @@ def rate_book():
     book_id = request.form.get("book")
     score = request.form.get("score")
     book = Book.query.get(book_id)
-#needs to be fixed
+
     try:
         email = session['email']
 
@@ -132,13 +137,13 @@ def rate_book():
             rating.score = score
             db.session.commit()
             flash("You have updated your rating for " + book.title + " to a " + score + ".")
-            return redirect("/movies/" + movie_id)
+            return redirect("/")
         else:
-            new_rating = Rating(movie_id=movie_id, user_id=user_id, score=score)
+            new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
-            flash("You have rated " + movie.title + " as a " + score + ".")
-            return redirect("/movies/" + movie_id)
+            flash("You have rated " + book.title + " as a " + score + ".")
+            return redirect("/")
 
     except KeyError:
         flash("Not a valid user logged in!")
