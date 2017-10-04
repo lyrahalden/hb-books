@@ -44,3 +44,4 @@ To do:
     modify user page to be able to choose a genre to add to their favorite genres (aka UserGenres)
     edit name of super long book names to be on multiple lines
 
+

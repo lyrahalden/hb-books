@@ -30,13 +30,17 @@ Take the time to let us know which genres are your favorite! It'll make our reco
     </ul><br><br>
 {% endif %}
 
+<div id="genres">
 Some genres we have books for are:
-    <ul>
+    <ul class="genre-list">
     {% for genre in genres %}
 
         <li>{{genre.name}}</li>
 
     {% endfor %}
     </ul>
-
+<p>Get more genres:
+    <button id="get-genre-button">More!</button>
+  </p>
+</div>
 {% endblock %}

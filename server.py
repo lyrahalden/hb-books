@@ -5,7 +5,7 @@ from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import (Flask, render_template, redirect, request, flash,
-                   session)
+                   session, jsonify)
 
 from model import Book, Genre, BookGenre, User, Rating, connect_to_db, db
 
@@ -59,11 +59,26 @@ def user_details(some_id):
     user = User.query.get(some_id)
 
     if user and session['email'] == user.email:
-        genres = Genre.query.all()
+        genres = Genre.query.limit(3)
         return render_template("user_page.html", user=user, genres=genres)
     else:
         flash("Sorry, you must log in to your account to view user details.")
         return redirect("/")
+
+
+@app.route("/genres", methods=["POST"])
+def get_three_genres():
+    """Returns 3 random genres from the db"""
+
+    counter = request.form.get("counter")
+    genres = Genre.query.limit(3).offset(counter).all()
+
+    json_genres = {}
+
+    for genre in genres:
+        json_genres[genre.genre_id] = genre.name
+
+    return jsonify(json_genres)
 
 
 @app.route("/register")
@@ -119,35 +134,35 @@ def log_in():
         return redirect("/")
 
 
-@app.route("/rate", methods=["POST"])
-def rate_book():
-    """Passes rating for book"""
+# @app.route("/rate", methods=["POST"])
+# def rate_book():
+#     """Passes rating for book"""
 
-    book_id = request.form.get("book")
-    score = request.form.get("score")
-    book = Book.query.get(book_id)
+#     book_id = request.form.get("book")
+#     score = request.form.get("score")
+#     book = Book.query.get(book_id)
 
-    try:
-        email = session['email']
+#     try:
+#         email = session['email']
 
-        user = User.query.filter_by(email=email).first()
-        user_id = user.user_id
-        rating = Rating.query.filter(Rating.user_id == user_id, Rating.book_id == book_id).first()
-        if rating:
-            rating.score = score
-            db.session.commit()
-            flash("You have updated your rating for " + book.title + " to a " + score + ".")
-            return redirect("/")
-        else:
-            new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
-            db.session.add(new_rating)
-            db.session.commit()
-            flash("You have rated " + book.title + " as a " + score + ".")
-            return redirect("/")
+#         user = User.query.filter_by(email=email).first()
+#         user_id = user.user_id
+#         rating = Rating.query.filter(Rating.user_id == user_id, Rating.book_id == book_id).first()
+#         if rating:
+#             rating.score = score
+#             db.session.commit()
+#             flash("You have updated your rating for " + book.title + " to a " + score + ".")
+#             return redirect("/")
+#         else:
+#             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
+#             db.session.add(new_rating)
+#             db.session.commit()
+#             flash("You have rated " + book.title + " as a " + score + ".")
+#             return redirect("/")
 
-    except KeyError:
-        flash("Not a valid user logged in!")
-        return redirect("/")
+#     except KeyError:
+#         flash("Not a valid user logged in!")
+#         return redirect("/")
 
 
 @app.route("/logout")

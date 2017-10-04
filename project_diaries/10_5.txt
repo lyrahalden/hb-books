@@ -1,0 +1,25 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+Goals for today:
+    modify all books page to allow user to rate a book by clicking on it
+    modify user page to be able to choose a genre to add to their favorite genres (aka UserGenres)
+    edit name of super long book names to be on multiple lines
+
+
+12pm
+    -created ajax route to get any genres from the server- not working
+    - not sure of the best way to get successive rows from the db - limit/offset with counters? or pagination? what is pagination?
+
+1-2 lunch
+
+2pm
+    asked Kiko about ajax call
+    found out must jsonify genres manually in the flask route - done
+    found out using limit and offset to paginate should work
+    also found out must pass a counter through the ajax get request to update the offset parameter
+    keep getting a TypeError when trying to pass data through an ajax get or post request
+
+3pm
+    figured out counter with Agne
