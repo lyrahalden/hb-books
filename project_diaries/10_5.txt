@@ -39,6 +39,7 @@ To do:
     books page:
         modify all books page to allow user to rate a book by clicking on it
         edit name of super long book names to be on multiple lines
+        make books sortable by attribute
 
     user page:
         add error handling for when user gets to the end of the genres?
