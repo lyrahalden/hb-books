@@ -29,12 +29,19 @@ Goals for today:
     together with Kiko, got the ajax call for adding a user genre to work
 
 5pm
+    general moral support
+    added link to homepage in base at top
+    added all_users page back in for ease of development
+    fixed registration form
 
 
 To do:
-    modify all books page to allow user to rate a book by clicking on it
-    clean up formatting of genres the user has added
-    add error handling for when user gets to the end of the genres?
-    figure out how to clean up genre names - some are repetitive
-    edit name of super long book names to be on multiple lines
+    books page:
+        modify all books page to allow user to rate a book by clicking on it
+        edit name of super long book names to be on multiple lines
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        figure out how to clean up genre names - some are repetitive
+
     write tests

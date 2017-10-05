@@ -27,12 +27,12 @@ def index():
     return render_template('homepage.html')
 
 
-# @app.route("/users")
-# def user_list():
-#     """Show list of users."""
+@app.route("/users")
+def user_list():
+    """Show list of users."""
 
-#     users = User.query.all()
-#     return render_template("all_users.html", users=users)
+    users = User.query.all()
+    return render_template("all_users.html", users=users)
 
 
 @app.route("/books")
@@ -41,15 +41,6 @@ def book_list():
 
     books = Book.query.order_by('author').all()
     return render_template("all_books.html", books=books)
-
-
-# @app.route("/movies/<some_id>")
-# def movie_details(some_id):
-#     """Shows movie details."""
-
-#     movie = Movie.query.get(some_id)
-
-#     return render_template("movie_page.html", movie=movie)
 
 
 @app.route("/users/<some_id>")
@@ -68,7 +59,7 @@ def user_details(some_id):
 
 @app.route("/genres", methods=["POST"])
 def get_three_genres():
-    """Returns 3 random genres from the db"""
+    """Returns 3 genres from the db"""
 
     counter = request.form.get("counter")
     genres = Genre.query.limit(3).offset(counter).all()
@@ -99,13 +90,6 @@ def add_a_genre():
     matching["genre"] = matching_genre.name
 
     return jsonify(matching)
-
-
-@app.route("/register")
-def reg_form():
-    """Show registration form"""
-
-    return render_template("registration_form.html")
 
 
 @app.route("/register", methods=["POST"])
