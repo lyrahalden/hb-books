@@ -23,3 +23,18 @@ Goals for today:
 
 3pm
     figured out counter with Agne
+    emailed Michelle
+
+4pm
+    together with Kiko, got the ajax call for adding a user genre to work
+
+5pm
+
+
+To do:
+    modify all books page to allow user to rate a book by clicking on it
+    clean up formatting of genres the user has added
+    add error handling for when user gets to the end of the genres?
+    figure out how to clean up genre names - some are repetitive
+    edit name of super long book names to be on multiple lines
+    write tests

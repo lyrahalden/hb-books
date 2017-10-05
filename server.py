@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
-from model import Book, Genre, BookGenre, User, Rating, connect_to_db, db
+from model import Book, Genre, BookGenre, User, UserGenre, Rating, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -81,6 +81,26 @@ def get_three_genres():
     return jsonify(json_genres)
 
 
+@app.route("/add-a-genre", methods=["POST"])
+def add_a_genre():
+    """Adds the genre a user has selected to UserGenre"""
+
+    genre_name = request.form.get("genre_name")
+    user_email = session['email']
+
+    matching_genre = Genre.query.filter(Genre.name.like("%"+genre_name+"%")).first()
+    matching_user = User.query.filter(User.email == user_email).first()
+
+    new_user_genre = UserGenre(user_id=matching_user.user_id, genre_id=matching_genre.genre_id)
+    db.session.add(new_user_genre)
+    db.session.commit()
+
+    matching = {}
+    matching["genre"] = matching_genre.name
+
+    return jsonify(matching)
+
+
 @app.route("/register")
 def reg_form():
     """Show registration form"""
@@ -124,7 +144,8 @@ def log_in():
         if user and password == user.password:
             session['email'] = email
             flash("You have been logged in!")
-            return render_template("user_page.html", user=user)
+            genres = Genre.query.limit(3)
+            return render_template("user_page.html", user=user, genres=genres)
         else:
             flash("Login failed. Email or password was not correct.")
             return redirect("/")

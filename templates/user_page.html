@@ -24,7 +24,7 @@ Take the time to let us know which genres are your favorite! It'll make our reco
     <ul>
         {% for genre in user.genres %}
             <li>
-                {{genre}}
+                {{genre.name}}
             </li>
         {% endfor %}
     </ul><br><br>
@@ -35,7 +35,8 @@ Some genres we have books for are:
     <ul class="genre-list">
     {% for genre in genres %}
 
-        <li>{{genre.name}}</li>
+        <button class="usergenre">{{genre.name}}</button>
+        <br>
 
     {% endfor %}
     </ul>
