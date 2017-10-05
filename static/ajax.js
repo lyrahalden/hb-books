@@ -15,6 +15,7 @@ function showGenres(results) {
 }
 
 function getGenres() {
+
     $.post('/genres', {"counter": counter}, showGenres);
 }
 
@@ -32,4 +33,21 @@ function addGenre(results){
 $('#genres').on('click', ".usergenre", function() {
     var genre = $(this).html();
     $.post("/add-a-genre", {"genre_name": genre}, addGenre);
+});
+
+//When a user clicks the recommendation button, recommend a book to them!
+
+function displayRec(results){
+    var books = results;
+    var book_recs = "";
+    $.each(books, function(key, value) {
+        book_recs += "<p class=usergenre>"+value[0]+" by "+value[1]+"</p>";
+    });
+    $('#rec').html(book_recs);
+
+}
+
+
+$('#rec-button').on('click', function() {
+    $.get("/recommend", displayRec)
 });

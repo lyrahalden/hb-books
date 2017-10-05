@@ -1,0 +1,32 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+most impt - make recommendation engine
+    books page:
+        modify all books page to allow user to rate a book by clicking on it
+        edit name of super long book names to be on multiple lines
+        make books sortable by attribute
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        figure out how to clean up genre names - some are repetitive
+
+    write tests
+
+12pm -
+    scrummed
+    emailed Michelle back
+    came up with a genres-only recommendation algorithm
+    did some sample queries
+
+1-2 lunch
+
+2pm
+    trying to implement algorithm
+    fixed Unicode/Decode error by setting pythonioencoding variable to utf-8 -- export PYTHONIOENCODING=UTF-8
+        have to restart the env or restart the bash profile to make the change  -- source ~/.bashrc
+
+3pm
+

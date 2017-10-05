@@ -112,6 +112,31 @@ class Genre(db.Model):
 ##############################################################################
 # Helper functions
 
+def recommend(user):
+    """Given a user, recommend a book or books for them"""
+
+    book_genre_dict = {}
+
+    # creates a dictionary where the key is a book object and the value is a list of genres that book belongs to
+    #all of those genres are genres the user has favorited
+
+    for genre in user.genres:
+        for book in genre.books:
+            if book in book_genre_dict:
+                book_genre_dict[book].append(genre)
+            else:
+                book_genre_dict[book] = [genre]
+
+    list_of_recommendations = []
+
+    for book in book_genre_dict.keys():
+        if set(user.genres) <= set(book.genres):
+            list_of_recommendations.append(book)
+        elif set(user.genres) & set(book.genres):
+            list_of_recommendations.append(book)
+
+    return list_of_recommendations
+
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

@@ -7,7 +7,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
-from model import Book, Genre, BookGenre, User, UserGenre, Rating, connect_to_db, db
+from model import Book, Genre, BookGenre, User, UserGenre, Rating, recommend, connect_to_db, db
+
 
 app = Flask(__name__)
 
@@ -137,6 +138,23 @@ def log_in():
     except AttributeError:
         flash("Login failed. Email or password was not correct.")
         return redirect("/")
+
+
+@app.route("/recommend")
+def make_recommendations():
+
+    email = session["email"]
+
+    user = User.query.filter_by(email=email).first()
+
+    list_of_recommendations = recommend(user)
+
+    json_recs = {}
+
+    for book in list_of_recommendations:
+        json_recs[book.book_id] = [book.title, book.author]
+
+    return jsonify(json_recs)
 
 
 # @app.route("/rate", methods=["POST"])
