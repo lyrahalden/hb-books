@@ -21,7 +21,7 @@ def load_books():
     BookGenre.query.delete()
 
     # Read scraped books.json file and turn json into python dictionary
-    json_string = open("seed_data/books.json").read()
+    json_string = open("seed_data/books3.json").read()
     books_dict = json.loads(json_string)
 
     #create empty dict that will keep track of all the unique genres

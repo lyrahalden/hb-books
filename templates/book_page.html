@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Book Details Page {% endblock %}
+
+
+{% block content %}
+<hr>
+<br>
+Book title: {{ book.title }}
+<br>
+<br>
+Author name: {{ book.author }}
+<br>
+<img class="bookImg" src={{ book.pic_url}}>
+<br><br>
+{%if book.genres %}
+Genres:
+<div>
+    <ul>
+        {% for genre in book.genres %}
+        <li>{{genre.name}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+<br>
+<a href = "/books">Go back to main books page</a>
+<br>
+<br>
+<form action="/rate" method=POST>
+  Enter your rating as a number from 1 to 5, where 1 is the lowest score:<br>
+  <input type="text" name="score">
+  <input type="hidden" name="book" value={{ book.book_id }}>
+  <input type="submit" value="Submit">
+</form>
+
+<ul>
+{% for rating in book.ratings if book.ratings%}
+    <li>Rated the book "{{ rating.book.title }}": {{ rating.score }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

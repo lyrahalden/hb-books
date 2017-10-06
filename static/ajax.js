@@ -6,7 +6,6 @@ var counter = 3;
 function showGenres(results) {
     var genres = results;
     var new_genres = "";
-    counter += 3;
     $.each(genres, function(key, value) {
         new_genres += "<button class=usergenre>"+value+"</button><br>";
     });
@@ -15,12 +14,20 @@ function showGenres(results) {
 }
 
 function getGenres() {
-
+    counter += 3;
     $.post('/genres', {"counter": counter}, showGenres);
 }
 
 $('#get-genre-button').on('click', getGenres);
 
+//When a user clicks the back button, take them back three genres in the db
+
+
+$("#back-genre-button").on('click', function() {
+    counter -= 3;
+    $.post('/genres', {"counter": counter}, showGenres)
+
+});
 
 //when a user clicks the name of a genre, it should add that genre to the db
 
@@ -47,7 +54,7 @@ function removeGenre(results){
 
 $('#faved-genres').on('click', ".faved-genres", function() {
     var genre = $(this).html();
-    console.log(genre)
+    console.log(genre);
     $.post("/remove-a-genre", {"genre_name": genre}, removeGenre);
 });
 
@@ -59,9 +66,11 @@ function displayRec(results){
     console.log(books)
     var book_recs = "";
     $.each(books, function(key, value) {
-        book_recs += "<p class=usergenre>"+value[0]+" by "+value[1]+"</p>";
+        book_recs += "<a class=usergenre href='/books/"+key+"'>"+value[0]+" by "+value[1]+"</a><br>";
+
     });
     $('#rec').html(book_recs);
+
 
 }
 

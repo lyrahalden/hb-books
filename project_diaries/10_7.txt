@@ -3,7 +3,10 @@ write down hour by hour
 take stretch breaks
 
 To do:
-most impt - make recommendation engine
+    General:
+        scrape more books
+        come up with some sort of way to rate genres' similarity
+
     books page:
         modify all books page to allow user to rate a book by clicking on it
         edit name of super long book names to be on multiple lines
@@ -11,8 +14,9 @@ most impt - make recommendation engine
 
     user page:
         add error handling for when user gets to the end of the genres?
+        add error handling for when the user tries to add a genre that is already in their favs
         figure out how to clean up genre names - some are repetitive
-        modify addGenres to add the genre the user just faved w/o having to refresh
+        make 'back' button so user can go back in the list of genres
 
     write tests
 
@@ -25,3 +29,31 @@ most impt - make recommendation engine
 12pm
     fixed ajax bugs - will have to rely on bootstrap to make formatting look nicer later
     MVP is complete!
+
+1-2 lunch
+
+2pm
+    tinkering with algorithm
+    discovered that only the genres:
+
+    Nonfiction
+    History
+    Fantasy
+    Historical Fiction
+    Contemporary
+    Young Adult
+    Comics
+    Graphic Novels
+
+    have more than three books! This is not good for my rec algorithm.
+
+3pm
+    modified the spider to scrape all the pages of the list instead of just one
+    realized a lot of the books on the following pages were just spam/fake books
+    reseeded my database with a better goodreads list
+    uncommented the ratings flask route = users can now rate books on the individual books page
+
+4pm
+    Playing with the genre rec algorithm
+    there is an error with Historical where the flask route thinks it is Historical Fiction
+    How do I get rid of Historical? It doesn't really seem to serve a purpose.

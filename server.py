@@ -9,6 +9,7 @@ from flask import (Flask, render_template, redirect, request, flash,
 
 from model import Book, Genre, BookGenre, User, UserGenre, Rating, recommend, connect_to_db, db
 
+from sqlalchemy import desc
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def user_list():
 def book_list():
     """Show list of books."""
 
-    books = Book.query.order_by('author').all()
+    books = Book.query.order_by(desc('avg_rating')).all()
     return render_template("all_books.html", books=books)
 
 
@@ -56,6 +57,15 @@ def user_details(some_id):
     else:
         flash("Sorry, you must log in to your account to view user details.")
         return redirect("/")
+
+
+@app.route("/books/<some_id>")
+def book_details(some_id):
+    """Shows book details."""
+
+    book = Book.query.get(some_id)
+
+    return render_template("book_page.html", book=book)
 
 
 @app.route("/genres", methods=["POST"])
@@ -82,6 +92,11 @@ def add_a_genre():
 
     matching_genre = Genre.query.filter(Genre.name.like("%"+genre_name+"%")).first()
     matching_user = User.query.filter(User.email == user_email).first()
+
+    possible_duplicate = UserGenre.query.filter(UserGenre.user_id == matching_user.user_id, UserGenre.genre_id == matching_genre.genre_id).first()
+
+    if possible_duplicate:
+        return jsonify({"genre": "nope"})
 
     new_user_genre = UserGenre(user_id=matching_user.user_id, genre_id=matching_genre.genre_id)
     db.session.add(new_user_genre)
@@ -180,35 +195,35 @@ def make_recommendations():
     return jsonify(json_recs)
 
 
-# @app.route("/rate", methods=["POST"])
-# def rate_book():
-#     """Passes rating for book"""
+@app.route("/rate", methods=["POST"])
+def rate_book():
+    """Passes rating for book"""
 
-#     book_id = request.form.get("book")
-#     score = request.form.get("score")
-#     book = Book.query.get(book_id)
+    book_id = request.form.get("book")
+    score = request.form.get("score")
+    book = Book.query.get(book_id)
 
-#     try:
-#         email = session['email']
+    try:
+        email = session['email']
 
-#         user = User.query.filter_by(email=email).first()
-#         user_id = user.user_id
-#         rating = Rating.query.filter(Rating.user_id == user_id, Rating.book_id == book_id).first()
-#         if rating:
-#             rating.score = score
-#             db.session.commit()
-#             flash("You have updated your rating for " + book.title + " to a " + score + ".")
-#             return redirect("/")
-#         else:
-#             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
-#             db.session.add(new_rating)
-#             db.session.commit()
-#             flash("You have rated " + book.title + " as a " + score + ".")
-#             return redirect("/")
+        user = User.query.filter_by(email=email).first()
+        user_id = user.user_id
+        rating = Rating.query.filter(Rating.user_id == user_id, Rating.book_id == book_id).first()
+        if rating:
+            rating.score = score
+            db.session.commit()
+            flash("You have updated your rating for " + book.title + " to a " + score + ".")
+            return redirect("/books")
+        else:
+            new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
+            db.session.add(new_rating)
+            db.session.commit()
+            flash("You have rated " + book.title + " as a " + score + ".")
+            return redirect("/books")
 
-#     except KeyError:
-#         flash("Not a valid user logged in!")
-#         return redirect("/")
+    except KeyError:
+        flash("Not a valid user logged in!")
+        return redirect("/")
 
 
 @app.route("/logout")
