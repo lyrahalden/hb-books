@@ -27,7 +27,7 @@ $('#get-genre-button').on('click', getGenres);
 function addGenre(results){
 
     alert("You have added " + results["genre"] + " to your list of favs!");
-    $('#fav-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>")
+    $('#faved-genres').append("<li><button class=faved-genres>"+results["genre"]+"</button></li><br>")
 
 }
 
@@ -41,12 +41,12 @@ $('#genres').on('click', ".usergenre", function() {
 
 function removeGenre(results){
     alert("You have removed " + results["genre"] + " to your list of favs!");
-    $('#fav-genres').remove("<button class=faved-genres>"+results["genre"]+"</button><br>")
+    $('#faved-genres').remove("<button class=faved-genres>"+results["genre"]+"</button><br>")
 
 }
 
-$('#fav-genres').on('click', ".faved-genres", function() {
-    var genre = $(this).text();
+$('#faved-genres').on('click', ".faved-genres", function() {
+    var genre = $(this).text().trim();
     console.log(genre)
     $.post("/remove-a-genre", {"genre_name": genre}, removeGenre);
 });
