@@ -12,6 +12,7 @@ most impt - make recommendation engine
     user page:
         add error handling for when user gets to the end of the genres?
         figure out how to clean up genre names - some are repetitive
+        modify addGenres to add the genre the user just faved w/o having to refresh
 
     write tests
 
@@ -28,5 +29,30 @@ most impt - make recommendation engine
     fixed Unicode/Decode error by setting pythonioencoding variable to utf-8 -- export PYTHONIOENCODING=UTF-8
         have to restart the env or restart the bash profile to make the change  -- source ~/.bashrc
 
-3pm
+3pm, 4pm
+    got a simple algorithm to work!!!!
+    got the Unicode/Decode error again even though the env variable is still set to utf-8 (???)
+    returns a book if the book's genres match the user's genres exactly
+        OR if the book's and user's genres have at least one genre in common
+    took break 4:20-5
+
+5pm
+    refined algorithm to only recommend a book if the user and the book have two or more genres in common
+    modified addGenres to add the genre the user just faved w/o having to refresh
+
+
+
+To do:
+    books page:
+        modify all books page to allow user to rate a book by clicking on it
+        edit name of super long book names to be on multiple lines
+        make books sortable by attribute
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        figure out how to clean up genre names - some are repetitive
+        add "go back button"
+        add capability to delete faved genres
+
+    write tests
 

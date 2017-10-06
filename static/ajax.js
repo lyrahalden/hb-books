@@ -27,6 +27,7 @@ $('#get-genre-button').on('click', getGenres);
 function addGenre(results){
 
     alert("You have added " + results["genre"] + " to your list of favs!");
+    $('#fav-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>")
 
 }
 
@@ -34,6 +35,22 @@ $('#genres').on('click', ".usergenre", function() {
     var genre = $(this).html();
     $.post("/add-a-genre", {"genre_name": genre}, addGenre);
 });
+
+
+//When a user clicks the button again, delete that genre from the db!
+
+function removeGenre(results){
+    alert("You have removed " + results["genre"] + " to your list of favs!");
+    $('#fav-genres').remove("<button class=faved-genres>"+results["genre"]+"</button><br>")
+
+}
+
+$('#fav-genres').on('click', ".faved-genres", function() {
+    var genre = $(this).text();
+    console.log(genre)
+    $.post("/remove-a-genre", {"genre_name": genre}, removeGenre);
+});
+
 
 //When a user clicks the recommendation button, recommend a book to them!
 
@@ -46,7 +63,6 @@ function displayRec(results){
     $('#rec').html(book_recs);
 
 }
-
 
 $('#rec-button').on('click', function() {
     $.get("/recommend", displayRec)

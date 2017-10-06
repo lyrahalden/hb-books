@@ -22,16 +22,18 @@ Here are the books you have rated so far-
 <br><br>
 Take the time to let us know which genres are your favorite! It'll make our recommendations better.
 <br><br>
+<div>
 {% if user.genres %}
     Some of the genres you already love are:
-    <ul>
+    <ul id="fav-genres">
         {% for genre in user.genres %}
-            <li>
+            <button class="faved-genres">
                 {{genre.name}}
-            </li>
+            </button><br>
         {% endfor %}
     </ul><br><br>
 {% endif %}
+</div>
 
 <div id="genres">
 Some genres we have books for are:

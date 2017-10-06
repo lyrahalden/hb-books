@@ -40,8 +40,8 @@ class UserGenre(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<UserGenre user_genre_id=%s book_id=%s user_id=%s>" % (
-            self.user_genre_id, self.book_id, self.user_id)
+        return "<UserGenre user_genre_id=%s user_id=%s>" % (
+            self.user_genre_id, self.user_id)
 
 
 class Rating(db.Model):
@@ -132,7 +132,7 @@ def recommend(user):
     for book in book_genre_dict.keys():
         if set(user.genres) <= set(book.genres):
             list_of_recommendations.append(book)
-        elif set(user.genres) & set(book.genres):
+        elif len(set(user.genres) & set(book.genres)) > 2:
             list_of_recommendations.append(book)
 
     return list_of_recommendations

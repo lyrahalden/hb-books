@@ -93,6 +93,30 @@ def add_a_genre():
     return jsonify(matching)
 
 
+@app.route("/remove-a-genre", methods=["POST"])
+def remove_a_genre():
+    """Removes the faved genre a user has clicked from their list of faves"""
+
+    genre_name = str(request.form.get("genre_name"))
+    user_email = session["email"]
+
+    matching_genre = Genre.query.filter(Genre.name.like("%"+genre_name+"%")).first()
+    matching_user = User.query.filter(User.email == user_email).first()
+    print 'genre', matching_genre
+    print 'user', matching_user
+    matching_user_genre = UserGenre.query.filter(UserGenre.user_id == matching_user.user_id, UserGenre.genre_id == matching_genre.genre_id).first()
+    print matching_user_genre
+    # db.session.delete(matching_user_genre)
+    # db.session.commit()
+
+    # matching = {}
+    # matching["genre"] = matching_genre.name
+
+    # return jsonify(matching)
+    return 'hi'
+
+
+
 @app.route("/register", methods=["POST"])
 def confirm_registration():
     """Confirms registration"""
