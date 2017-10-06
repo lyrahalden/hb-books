@@ -97,7 +97,8 @@ def add_a_genre():
 def remove_a_genre():
     """Removes the faved genre a user has clicked from their list of faves"""
 
-    genre_name = request.form["genre_name"]
+    genre_name = request.form.get("genre_name")
+    print request.form.get("genre_name")
     user_email = session["email"]
 
     matching_genre = Genre.query.filter(Genre.name.like("%"+genre_name+"%")).first()

@@ -26,8 +26,8 @@ $('#get-genre-button').on('click', getGenres);
 
 function addGenre(results){
 
+    $('#faved-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>");
     alert("You have added " + results["genre"] + " to your list of favs!");
-    $('#faved-genres').append("<li><button class=faved-genres>"+results["genre"]+"</button></li><br>")
 
 }
 
@@ -37,16 +37,16 @@ $('#genres').on('click', ".usergenre", function() {
 });
 
 
-//When a user clicks the button again, delete that genre from the db!
+// When a user clicks the button again, delete that genre from the db!
 
 function removeGenre(results){
-    alert("You have removed " + results["genre"] + " to your list of favs!");
-    $('#faved-genres').remove("<button class=faved-genres>"+results["genre"]+"</button><br>")
+    alert("You have removed " + results["genre"] + " from your list of favs!");
+    $('.faved-genres').remove(":contains('"+ results['genre']+"')");
 
 }
 
 $('#faved-genres').on('click', ".faved-genres", function() {
-    var genre = $(this).text().trim();
+    var genre = $(this).html();
     console.log(genre)
     $.post("/remove-a-genre", {"genre_name": genre}, removeGenre);
 });
@@ -56,6 +56,7 @@ $('#faved-genres').on('click', ".faved-genres", function() {
 
 function displayRec(results){
     var books = results;
+    console.log(books)
     var book_recs = "";
     $.each(books, function(key, value) {
         book_recs += "<p class=usergenre>"+value[0]+" by "+value[1]+"</p>";

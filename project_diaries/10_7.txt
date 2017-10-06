@@ -1,0 +1,27 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+most impt - make recommendation engine
+    books page:
+        modify all books page to allow user to rate a book by clicking on it
+        edit name of super long book names to be on multiple lines
+        make books sortable by attribute
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        figure out how to clean up genre names - some are repetitive
+        modify addGenres to add the genre the user just faved w/o having to refresh
+
+    write tests
+
+11:30am
+    scrummed
+    fixed ajax selector so that it selected the right element and passed the correct text to the db
+    now working on using Jquery.remove to remove the genre button properly
+    also the formatting for adding a new faved genre has gotten screwed up
+
+12pm
+    fixed ajax bugs - will have to rely on bootstrap to make formatting look nicer later
+    MVP is complete!

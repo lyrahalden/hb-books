@@ -24,28 +24,27 @@ Take the time to let us know which genres are your favorite! It'll make our reco
 <br><br>
 <div id="faved-genres">
 {% if user.genres %}
-    Some of the genres you already love are:
-    <ul class="faved-genres">
+    Some of the genres you already love are:<br>
+    <!-- <ul class="fav-genre-list"> -->
         {% for genre in user.genres %}
-            <li><button class="faved-genres">
-                {{genre.name}}
-            </button></li><br>
+            <button class="faved-genres">{{genre.name}}</button><br>
         {% endfor %}
-    </ul><br><br>
+    <!-- </ul> -->
+    <br><br>
 {% endif %}
 </div>
 
 <div id="genres">
-Some genres we have books for are:
-    <ul class="genre-list">
+Some genres we have books for are:<br>
+    <!-- <ul class="genre-list"> -->
     {% for genre in genres %}
 
         <button class="usergenre">{{genre.name}}</button>
         <br>
 
     {% endfor %}
-    </ul>
-<p>Get more genres:
+    <!-- </ul> -->
+<p>Get more genres:<br>
     <button id="get-genre-button">More!</button>
   </p>
 </div>
