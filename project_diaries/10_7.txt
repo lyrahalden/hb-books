@@ -8,15 +8,12 @@ To do:
         come up with some sort of way to rate genres' similarity
 
     books page:
-        modify all books page to allow user to rate a book by clicking on it
-        edit name of super long book names to be on multiple lines
         make books sortable by attribute
 
     user page:
         add error handling for when user gets to the end of the genres?
         add error handling for when the user tries to add a genre that is already in their favs
         figure out how to clean up genre names - some are repetitive
-        make 'back' button so user can go back in the list of genres
 
     write tests
 

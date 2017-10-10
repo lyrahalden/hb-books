@@ -63,9 +63,13 @@ def user_details(some_id):
 def book_details(some_id):
     """Shows book details."""
 
+    user = User.query.filter(User.email == session['email']).first()
+
     book = Book.query.get(some_id)
 
-    return render_template("book_page.html", book=book)
+    rating = Rating.query.filter(Rating.user_id == user.user_id, Rating.book_id == book.book_id).first()
+
+    return render_template("book_page.html", book=book, user=user, rating=rating)
 
 
 @app.route("/genres", methods=["POST"])

@@ -1,0 +1,48 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    General:
+        research machine learning as applies to book recs
+        refactor flask routes to use Flask-login
+        scrape metadata?
+        scrape reviews?
+
+    indiv books page:
+        add summary
+        add genre graphing information
+
+    books page:
+        make books sortable by attribute
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        add error handling for when the user tries to add a genre that is already in their favs
+        figure out how to clean up genre names - some are repetitive
+
+    write tests
+
+12:30-2
+    meet with Michelle, have lunch
+
+2:30-3 career strategy session
+
+3-4pm
+    researching natural language processing - Textblob looks good for analyzing reviews
+    researching other books APIs - none look very good
+    do i really need to rate genres' similarities to each other?
+    books are often tagged as similar genres
+    seems like the problem is too MANY genre tags, not too few
+
+5pm
+    talked with Henry about next sprint steps
+    decided on adding textual analysis of the reviews using sci-kit - see Henry's spam example
+    are there commonalities between all good books and all bad books
+    if you add a new text of a review, what stars will it be?
+    if you add two books together, what comes out?
+
+Tmo: scrape reviews, modify model to include reviews and summary of book
+
+
+

@@ -12,6 +12,9 @@ Book title: {{ book.title }}
 <br>
 Author name: {{ book.author }}
 <br>
+<br>
+Average rating on Goodreads: {{book.avg_rating}}
+<br>
 <img class="bookImg" src={{ book.pic_url}}>
 <br><br>
 {%if book.genres %}
@@ -24,7 +27,11 @@ Genres:
     </ul>
 </div>
 {% endif %}
-<br>
+
+{% if rating %}
+You have given this book a {{rating.score}}
+{% endif %}
+<br><br>
 <a href = "/books">Go back to main books page</a>
 <br>
 <br>
@@ -35,10 +42,5 @@ Genres:
   <input type="submit" value="Submit">
 </form>
 
-<ul>
-{% for rating in book.ratings if book.ratings%}
-    <li>Rated the book "{{ rating.book.title }}": {{ rating.score }}</li>
-{% endfor %}
-</ul>
 
 {% endblock %}
