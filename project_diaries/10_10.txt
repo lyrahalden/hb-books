@@ -1,0 +1,16 @@
+Goals: scrape reviews, modify model to include reviews and summary of book
+
+11am
+    scrum
+    fixed wifi on computer
+    modifying spider to scrape reviews as well
+    getting right selectors is taking a while
+
+1-2 lunch
+
+2pm
+    found last right selector
+    scraping is taking a while
+
+    finally decided it would be easiest to just scrape the book title as well
+    and take that into account when seeding the db

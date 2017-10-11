@@ -2,10 +2,6 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-# This is the connection to the PostgreSQL database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
-
 db = SQLAlchemy()
 
 
@@ -49,9 +45,10 @@ class Rating(db.Model):
     __tablename__ = "ratings"
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.String(10000), nullable=True)
 
     book = db.relationship('Book', backref='ratings')
     user = db.relationship('User', backref='ratings')
@@ -71,8 +68,9 @@ class Book(db.Model):
     book_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(200), nullable=False)
-    avg_rating = db.Column(db.String(200), nullable=False)
+    avg_rating = db.Column(db.Integer, nullable=False)
     pic_url = db.Column(db.String(200), nullable=False)
+    summary = db.Column(db.String(1000), nullable=False)
 
     genres = db.relationship('Genre', secondary="books_genres", backref='books')
 

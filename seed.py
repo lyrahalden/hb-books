@@ -21,7 +21,7 @@ def load_books():
     BookGenre.query.delete()
 
     # Read scraped books.json file and turn json into python dictionary
-    json_string = open("seed_data/books3.json").read()
+    json_string = open("seed_data/books.json").read()
     books_dict = json.loads(json_string)
 
     #create empty dict that will keep track of all the unique genres
@@ -87,23 +87,22 @@ def load_users():
 
 
 def load_ratings():
-    """Load ratings from ratings.csv into database."""
+    """Load ratings from reviews.json into database."""
 
     print "Ratings"
 
     Rating.query.delete()
 
-    for row in open("seed_data/ratings.csv"):
-        row = row.rstrip()
-        rows = row.split("|")
+    json_string = open("seed_data/reviews.json").read()
+    ratings_dict = json.loads(json_string)
 
-        user_id = rows[0]
-        book_id = rows[1]
-        score = rows[2]
+    for rating in ratings_dict:
+        score = rating["score"]
+        title = rating["title"]
+        for block in rating["text_blocks"]:
 
-        rating = Rating(user_id=user_id, book_id=book_id, score=score)
 
-        db.session.add(rating)
+    db.session.add(rating)
 
     db.session.commit()
     print "Done!"

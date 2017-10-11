@@ -15,6 +15,7 @@ To do:
 
     books page:
         make books sortable by attribute
+        make search feature
 
     user page:
         add error handling for when user gets to the end of the genres?
