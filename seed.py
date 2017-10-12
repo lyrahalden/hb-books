@@ -21,18 +21,20 @@ def load_books():
     BookGenre.query.delete()
 
     # Read scraped books.json file and turn json into python dictionary
-    json_string = open("seed_data/books.json").read()
+    json_string = open("seed_data/books_low.json").read()
     books_dict = json.loads(json_string)
 
     #create empty dict that will keep track of all the unique genres
     all_genres = {}
 
-    #for each book in our json file, assign title, author, rating, pic_url attributes
+    #for each book in our json file, assign title, author, rating, pic_url, summary attributes
     for book in books_dict:
+        # import pdb
         title = book['title'].strip()
         author = book['author']
-        avg_rating = book['rating']
+        avg_rating = float(book['rating'])
         pic_url = book['pic_url']
+        summary = " ".join(book['summary_blocks']).strip()
 
         #create empty list representing all genres for this book
         genres_for_this_book = []
@@ -54,7 +56,7 @@ def load_books():
             genres_for_this_book.append(all_genres[genre])
 
         #after the genre loop is complete, create a Book object and pass in all attributes, including a list of genres for this book
-        book_obj = Book(title=title, author=author, avg_rating=avg_rating, pic_url=pic_url, genres=genres_for_this_book)
+        book_obj = Book(title=title, author=author, avg_rating=avg_rating, pic_url=pic_url, summary=summary, genres=genres_for_this_book)
 
         db.session.add(book_obj)
 
@@ -93,16 +95,19 @@ def load_ratings():
 
     Rating.query.delete()
 
-    json_string = open("seed_data/reviews.json").read()
+    json_string = open("seed_data/reviews_low.json").read()
     ratings_dict = json.loads(json_string)
 
     for rating in ratings_dict:
         score = rating["score"]
-        title = rating["title"]
-        for block in rating["text_blocks"]:
+        scraped_title = rating["title"].strip(' > ')
+        text = " ".join(rating["text_blocks"]).strip()
 
+        matching_book = Book.query.filter(Book.title == scraped_title).first()
 
-    db.session.add(rating)
+        if matching_book and score:
+            new_rating = Rating(book=matching_book, score=score, text=text)
+            db.session.add(new_rating)
 
     db.session.commit()
     print "Done!"

@@ -48,7 +48,7 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
-    text = db.Column(db.String(10000), nullable=True)
+    text = db.Column(db.String(20000), nullable=True)
 
     book = db.relationship('Book', backref='ratings')
     user = db.relationship('User', backref='ratings')
@@ -68,9 +68,9 @@ class Book(db.Model):
     book_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     author = db.Column(db.String(200), nullable=False)
-    avg_rating = db.Column(db.Integer, nullable=False)
+    avg_rating = db.Column(db.Float, nullable=False)
     pic_url = db.Column(db.String(200), nullable=False)
-    summary = db.Column(db.String(1000), nullable=False)
+    summary = db.Column(db.String(10000), nullable=False)
 
     genres = db.relationship('Genre', secondary="books_genres", backref='books')
 

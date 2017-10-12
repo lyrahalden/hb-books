@@ -7,14 +7,10 @@ class BookSpider(scrapy.Spider):
     # start at the url for the list of 'Books With a Goodreads Average Rating of Over 4.5'
     def start_requests(self):
         start_urls = [
-            'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=1'
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=2',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=3',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=4',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=5',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=6',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=7',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=8'
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=1',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=2',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=3',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=4'
         ]
 
         for url in start_urls:

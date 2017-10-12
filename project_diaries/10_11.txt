@@ -1,0 +1,52 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    General:
+        apply Henry's example to my reviews
+        refactor flask routes to use Flask-login
+
+    indiv books page:
+        add genre graphing information
+
+    books page:
+        make books sortable by attribute
+        make search feature
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        add error handling for when the user tries to add a genre that is already in their favs
+        figure out how to clean up genre names - some are repetitive
+
+    write tests
+
+11am
+    scrummed
+    seeded db with reviews and summaries!
+    put summary on books page
+    made avg_rating be a float in postgres and sql-al, rather than integer
+    summaries are repeating some text
+12pm
+    fixed a problem where the titles from the review page weren't matching up
+    to the titles from the book page
+    had to scrape and reseed
+
+1-2 lunch
+
+2pm
+    trying to understand classifier
+
+3pm
+    got classifier working, i think
+    getting some data that looks right, but there is a lot of noise
+    think more books and more reviews should help with that
+
+4pm
+    spent quite a bit of time investigating why there are missing reviews
+    it's because the title of the book on the review page is in another language
+    that's good actually because it will eliminate a lot of the non-English reviews
+
+    trying to reseed database with medium-rated books to check important words from reviews
+
+

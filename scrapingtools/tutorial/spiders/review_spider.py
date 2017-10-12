@@ -7,14 +7,11 @@ class ReviewSpider(scrapy.Spider):
     # start at the url for the list of 'Books With a Goodreads Average Rating of Over 4.5'
     def start_requests(self):
         start_urls = [
-            'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=1'
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=2',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=3',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=4',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=5',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=6',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=7',
-            # 'https://www.goodreads.com/list/show/24320.Books_With_a_Goodreads_Average_Rating_of_4_2_and_Above?page=8'
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=1',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=2',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=3',
+            'https://www.goodreads.com/list/show/13035.Books_That_Deserve_a_Higher_Rating_Avg_Rating_3_7_?page=4'
+
         ]
 
         for url in start_urls:
@@ -36,12 +33,10 @@ class ReviewSpider(scrapy.Spider):
         #make a list of links to the page for each review
         review_links = response.xpath('//*[(@id = "bookReviews")]//*[contains(concat( " ", @class, " " ), concat( " ", "createdAt", " " ))]/@href').extract()
 
-
         # follow each link to its review page and call parse_review_page for each one
         for link in review_links:
             if link is not None:
                 yield response.follow(link, callback=self.parse_review_page)
-
 
     #yield a list with each review's score and text, as well as the title of the book
     def parse_review_page(self, response):
@@ -50,5 +45,5 @@ class ReviewSpider(scrapy.Spider):
             'score': response.xpath('/html/body/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/div/div/div[1]/div/div[1]/div[3]/span[1]/@title').extract_first(),
             #like the summary text above, the review text is also broken up into sections, so it must be scraped into a list
             'text_blocks': response.css('.readable::text').extract(),
-            'title': response.css('.bookTitle::text').extract_first()
+            'title': response.xpath("/html/body/div[1]/div[2]/div[1]/div[1]/h1/text()").extract_first()
             }
