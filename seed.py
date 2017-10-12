@@ -29,36 +29,36 @@ def load_books():
 
     #for each book in our json file, assign title, author, rating, pic_url, summary attributes
     for book in books_dict:
-        # import pdb
-        title = book['title'].strip()
-        author = book['author']
-        avg_rating = float(book['rating'])
-        pic_url = book['pic_url']
-        summary = " ".join(book['summary_blocks']).strip()
+        if book['title'] is not None:
+            title = book['title'].strip()
+            author = book['author']
+            avg_rating = float(book['rating'])
+            pic_url = book['pic_url']
+            summary = " ".join(book['summary_blocks']).strip()
 
-        #create empty list representing all genres for this book
-        genres_for_this_book = []
+            #create empty list representing all genres for this book
+            genres_for_this_book = []
 
-        #loop through the genres for a particular book
-        for genre in book['genres']:
+            #loop through the genres for a particular book
+            for genre in book['genres']:
 
-            # if genre doesn't already exist in database:
-            if genre not in all_genres:
+                # if genre doesn't already exist in database:
+                if genre not in all_genres:
 
-                #make a new Genre object and add that Genre object to the database
-                genre_obj = Genre(name=genre)
-                db.session.add(genre_obj)
+                    #make a new Genre object and add that Genre object to the database
+                    genre_obj = Genre(name=genre)
+                    db.session.add(genre_obj)
 
-                #add a string representing the genre and its Genre object to the dict all_genres as a key-value pair
-                all_genres[genre] = genre_obj
+                    #add a string representing the genre and its Genre object to the dict all_genres as a key-value pair
+                    all_genres[genre] = genre_obj
 
-            #regardless of whether this exists in the database, add the corresponding Genre object to the list of genres for this book
-            genres_for_this_book.append(all_genres[genre])
+                #regardless of whether this exists in the database, add the corresponding Genre object to the list of genres for this book
+                genres_for_this_book.append(all_genres[genre])
 
-        #after the genre loop is complete, create a Book object and pass in all attributes, including a list of genres for this book
-        book_obj = Book(title=title, author=author, avg_rating=avg_rating, pic_url=pic_url, summary=summary, genres=genres_for_this_book)
+            #after the genre loop is complete, create a Book object and pass in all attributes, including a list of genres for this book
+            book_obj = Book(title=title, author=author, avg_rating=avg_rating, pic_url=pic_url, summary=summary, genres=genres_for_this_book)
 
-        db.session.add(book_obj)
+            db.session.add(book_obj)
 
     db.session.commit()
     print "Done!"

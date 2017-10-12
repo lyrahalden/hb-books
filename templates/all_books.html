@@ -5,7 +5,12 @@
 {% block content %}
 
     <h2>Books</h2>
-    <!-- <form action="/search"> -->
+    <div>
+        Search for a book title:<input name="autocomplete" type="text" id="autocomplete"/>
+    </div>
+    <br><br>
+    Result:<div id="results"></div>
+    <br><br>
       {% for book in books %}
       <div class="bookDiv">
           {{ book.title }}

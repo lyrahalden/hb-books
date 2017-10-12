@@ -45,6 +45,25 @@ def book_list():
     return render_template("all_books.html", books=books)
 
 
+@app.route("/autocomplete")
+def search():
+    """searches the db for user's query"""
+
+    param = request.args.get("term")
+    print param
+
+    books = Book.query.filter(Book.title.like('%'+param+'%')).all()
+
+    results = []
+
+    for book in books:
+        results.append(book.title)
+
+    print results
+
+    return jsonify(results)
+
+
 @app.route("/users/<some_id>")
 def user_details(some_id):
     """Shows user details."""
@@ -100,7 +119,8 @@ def add_a_genre():
     possible_duplicate = UserGenre.query.filter(UserGenre.user_id == matching_user.user_id, UserGenre.genre_id == matching_genre.genre_id).first()
 
     if possible_duplicate:
-        return jsonify({"genre": "nope"})
+        return jsonify({"message": "You have already added this genre to your list of favs!",
+                        "genre": "nope"})
 
     new_user_genre = UserGenre(user_id=matching_user.user_id, genre_id=matching_genre.genre_id)
     db.session.add(new_user_genre)
@@ -108,6 +128,7 @@ def add_a_genre():
 
     matching = {}
     matching["genre"] = matching_genre.name
+    matching["message"] = "You have added " + matching_genre.name + " to your list of favs!"
 
     return jsonify(matching)
 
@@ -238,6 +259,7 @@ def log_out():
     flash("You are logged out!")
 
     return redirect("/")
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

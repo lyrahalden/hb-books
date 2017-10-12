@@ -30,21 +30,25 @@ $("#back-genre-button").on('click', function() {
 });
 
 //when a user clicks the name of a genre, it should add that genre to the db
+//won't let a user add a genre twice
 
 function addGenre(results){
 
-    $('#faved-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>");
-    alert("You have added " + results["genre"] + " to your list of favs!");
+    if (results['genre'] !== "nope"){
+        $('#faved-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>");
+    }
+    alert(results["message"]);
 
 }
 
 $('#genres').on('click', ".usergenre", function() {
     var genre = $(this).html();
+    console.log(genre);
     $.post("/add-a-genre", {"genre_name": genre}, addGenre);
 });
 
 
-// When a user clicks the button again, delete that genre from the db!
+// When a user clicks the button again, delete that user-genre from the db!
 
 function removeGenre(results){
     alert("You have removed " + results["genre"] + " from your list of favs!");
@@ -77,3 +81,16 @@ function displayRec(results){
 $('#rec-button').on('click', function() {
     $.get("/recommend", displayRec)
 });
+
+
+//Search box with autofill
+
+$(function() {
+    $( "#autocomplete" ).autocomplete({
+      source: '/autocomplete',
+      minLength: 2,
+      select: function( event, ui ) {
+        $('#results').html( "Selected: " + ui.item.value );
+      }
+    });
+})

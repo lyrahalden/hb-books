@@ -1,0 +1,40 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    General:
+        apply Henry's example to my reviews
+        refactor flask routes to use Flask-login
+
+    indiv books page:
+        add genre graphing information
+
+    books page:
+        make books sortable by attribute
+        make search feature
+
+    user page:
+        add error handling for when user gets to the end of the genres?
+        figure out how to clean up genre names - some are repetitive
+
+    write tests
+
+12pm
+    scrummed
+    seeded database with books from the medium list
+    reclassified reviews - the words are a lot more indicative of quality now, without the 3 star reviews.
+    does this model use stop words? figured out it doesn't, added them in, not much changed
+    added n-gram of 2, 3 - nothing changed
+
+1-2 lunch
+
+2pm
+    fixed error handling for if a user has already added a genre to their list of favs - no more "nope" button!
+
+3pm
+    trying to figure out jquery autocomplete
+
+4pm
+    figured it out sort of
+
