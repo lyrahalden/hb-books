@@ -7,12 +7,14 @@ To do:
         apply Henry's example to my reviews
         refactor flask routes to use Flask-login
 
+    genres page:
+        add genre graph using chart.js
+
     indiv books page:
-        add genre graphing information
+        fix summary repeating problem
 
     books page:
         make books sortable by attribute
-        make search feature
 
     user page:
         add error handling for when user gets to the end of the genres?
@@ -37,4 +39,10 @@ To do:
 
 4pm
     figured it out sort of
+    still fills the box with what you've clicked on
+    looking into alternate autocomplete libraries
+
+5pm
+    read about autocomplete and search libraries
+    read about chart.js
 

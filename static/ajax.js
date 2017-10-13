@@ -86,7 +86,7 @@ $('#rec-button').on('click', function() {
 //Search box with autofill
 
 $(function() {
-    $( "#autocomplete" ).autocomplete({
+    $("#autocomplete").autocomplete({
       source: '/autocomplete',
       minLength: 2,
       select: function( event, ui ) {

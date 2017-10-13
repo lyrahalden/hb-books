@@ -45,6 +45,14 @@ def book_list():
     return render_template("all_books.html", books=books)
 
 
+@app.route("/genres")
+def all_genres():
+    """Show all genres in db"""
+
+    genres = Genre.query.order_by('name').all()
+    return render_template("all_genres.html", genres=genres)
+
+
 @app.route("/autocomplete")
 def search():
     """searches the db for user's query"""
