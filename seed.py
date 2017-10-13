@@ -28,7 +28,7 @@ def load_books():
     j_string_2 = open("seed_data/books_high.json").read()
     books_high = json.loads(j_string_2)
 
-    books_dict.update(books_high)
+    books_dict.extend(books_high)
 
     #create empty dict that will keep track of all the unique genres
     all_genres = {}
@@ -107,7 +107,7 @@ def load_ratings():
     j_string_2 = open("seed_data/reviews_high.json").read()
     ratings_high = json.loads(j_string_2)
 
-    ratings_dict.update(ratings_high)
+    ratings_dict.extend(ratings_high)
 
     for rating in ratings_dict:
         score = rating["score"]

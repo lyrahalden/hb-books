@@ -65,7 +65,7 @@ def search():
     results = []
 
     for book in books:
-        results.append(book.title)
+        results.append({"id": "/books/" + str(book.book_id), "value": book.title})
 
     print results
 

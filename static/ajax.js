@@ -90,7 +90,10 @@ $(function() {
       source: '/autocomplete',
       minLength: 2,
       select: function( event, ui ) {
-        $('#results').html( "Selected: " + ui.item.value );
+        var url = ui.item.id;
+        location.href = url;
+
+        // $('#results').html( "Selected: " + ui.item.value );
       }
     });
 })

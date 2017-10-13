@@ -15,6 +15,18 @@
     .genreDiv {
       border: 4px solid black;
     }
+    var options = { responsive: true };
+
+var ctx_donut = $("#donutChart").get(0).getContext("2d");
+
+$.get("/melon-types.json", function (data) {
+    var myDonutChart = new Chart(ctx_donut, {
+                                            type: 'doughnut',
+                                            data: data,
+                                            options: options
+                                          });
+    $('#donutLegend').html(myDonutChart.generateLegend());
+});
 
     </style>
 </head>
@@ -42,9 +54,14 @@
 
   {% block content %} CONTENT GOES HERE {% endblock %}
 
+<!-- imports jquery -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- imports jquery autofill  -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- imports local ajax file -->
 <script src="/static/ajax.js"></script>
+<!-- imports chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
 
 </body>
 </html>
