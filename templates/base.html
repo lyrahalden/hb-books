@@ -15,19 +15,6 @@
     .genreDiv {
       border: 4px solid black;
     }
-    var options = { responsive: true };
-
-var ctx_donut = $("#donutChart").get(0).getContext("2d");
-
-$.get("/melon-types.json", function (data) {
-    var myDonutChart = new Chart(ctx_donut, {
-                                            type: 'doughnut',
-                                            data: data,
-                                            options: options
-                                          });
-    $('#donutLegend').html(myDonutChart.generateLegend());
-});
-
     </style>
 </head>
 

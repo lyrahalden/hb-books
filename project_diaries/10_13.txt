@@ -4,8 +4,11 @@ take stretch breaks
 
 To do:
     General:
-        apply Henry's example to my reviews
+        apply Henry's example to my reviews, put in database
+        add new db with mixed-rated books into the analysis
+        visualize word cloud of reviews
         refactor flask routes to use Flask-login
+
 
     genres page:
         add genre graph using chart.js

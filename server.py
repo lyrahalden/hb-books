@@ -53,12 +53,32 @@ def all_genres():
     return render_template("all_genres.html", genres=genres)
 
 
+@app.route("/genre_info.json")
+def show_genre_info():
+
+    first_genre = Genre.query.get(1)
+    second_genre = Genre.query.get(2)
+
+    data_dict = {
+        "labels": [first_genre.name, second_genre.name],
+
+        "datasets": [
+            {
+                "data": [len(first_genre.books), len(second_genre.books)],
+                "backgroundColor": ["#FF6384", "#36A2EB"],
+                "hoverBackgroundColor": ["#FF6384", "#36A2EB"]
+            }
+
+        ]
+    }
+    return jsonify(data_dict)
+
+
 @app.route("/autocomplete")
 def search():
     """searches the db for user's query"""
 
     param = request.args.get("term")
-    print param
 
     books = Book.query.filter(Book.title.like('%'+param+'%')).all()
 
@@ -66,8 +86,6 @@ def search():
 
     for book in books:
         results.append({"id": "/books/" + str(book.book_id), "value": book.title})
-
-    print results
 
     return jsonify(results)
 

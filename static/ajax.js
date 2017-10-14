@@ -97,3 +97,18 @@ $(function() {
       }
     });
 })
+
+// display genre info
+
+var options = { responsive: true };
+
+var ctx_genre = $("#genreChart").get(0).getContext("2d");
+
+$.get("/genre_info.json", function (data) {
+var myDonutChart = new Chart(ctx_genre, {
+                                        type: 'doughnut',
+                                        data: data,
+                                        options: options
+                                      });
+$('#genreLegend').html(myDonutChart.generateLegend());
+});
