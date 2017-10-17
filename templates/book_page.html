@@ -19,7 +19,7 @@ Average rating on Goodreads: {{book.avg_rating}}
 <img class="bookImg" src={{ book.pic_url}}>
 <br><br>
 {%if book.genres %}
-Genres:
+<a href = "/genres">Genres:</a>
 <div>
     <ul>
         {% for genre in book.genres %}

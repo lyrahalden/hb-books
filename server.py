@@ -11,6 +11,8 @@ from model import Book, Genre, BookGenre, User, UserGenre, Rating, recommend, co
 
 from sqlalchemy import desc
 
+from random import randint
+
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
@@ -55,28 +57,43 @@ def all_genres():
 
 @app.route("/genre_info.json")
 def show_genre_info():
+    """Pass genre information to pie chart"""
 
-    first_genre = Genre.query.get(1)
-    second_genre = Genre.query.get(2)
+    genre_list = Genre.query.all()
 
     data_dict = {
-        "labels": [first_genre.name, second_genre.name],
+        "labels": [],
 
         "datasets": [
             {
-                "data": [len(first_genre.books), len(second_genre.books)],
-                "backgroundColor": ["#FF6384", "#36A2EB"],
-                "hoverBackgroundColor": ["#FF6384", "#36A2EB"]
+                "data": [],
+                "backgroundColor": []
             }
 
         ]
     }
+
+    for genre in genre_list:
+        if len(genre.books) > 50:
+            data_dict["labels"].append(genre.name)
+            data_dict["datasets"][0]['data'].append(len(genre.books))
+            data_dict["datasets"][0]["backgroundColor"].append(generate_colors())
+
     return jsonify(data_dict)
+
+
+def generate_colors():
+    r = randint(0, 255)
+    g = randint(0, 255)
+    b = randint(0, 255)
+    a = randint(0, 255)
+
+    return "rgba(%s,%s,%s,%s)" % (r, g, b, a)
 
 
 @app.route("/autocomplete")
 def search():
-    """searches the db for user's query"""
+    """searches the db for user's search term"""
 
     param = request.args.get("term")
 
@@ -264,13 +281,13 @@ def rate_book():
             rating.score = score
             db.session.commit()
             flash("You have updated your rating for " + book.title + " to a " + score + ".")
-            return redirect("/books")
+            return redirect("/books/" + book_id)
         else:
             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
             flash("You have rated " + book.title + " as a " + score + ".")
-            return redirect("/books")
+            return redirect("/books/" + book_id)
 
     except KeyError:
         flash("Not a valid user logged in!")

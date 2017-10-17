@@ -8,8 +8,10 @@ from sklearn import metrics
 
 from model import Rating, db, connect_to_db
 
+import json
 
-def import_reviews():
+
+def train_classifier():
     """ query the database and save the review and the score into two lists:
         labels (1 or 2 stars gets a negative label and 4 or 5 stars gets a positive label)
         and documents (the text of the review)"""
@@ -28,50 +30,56 @@ def import_reviews():
 
     with open('./reviews.csv') as f:
         for line in f:
-            if line[3] == '1' or line[3] == '2':
+            line_list = line.split('|')
+            if line_list[3] == '1' or line_list[3] == '2':
                 labels.append('neg')
-                documents.append(line[4:])
+                documents.append(line_list[4])
 
-            elif line[3] == '4' or line[3] == '5':
+            elif line_list[3] == '4' or line_list[3] == '5':
                 labels.append('pos')
-                documents.append(line[4:])
-
-    return (labels, documents)
-
-
-def make_vectors(labels, documents):
-    """makes vectors out of lists of labels and review texts"""
+                documents.append(line_list[4])
 
     vectorizer = TfidfVectorizer()
 
     X = vectorizer.fit_transform(documents)
     y = np.array(labels)
 
-    return (X, y)
-
-
-def cross_validate(X, Y):
-    """ performs cross validation given vectors"""
-
-    #instantiate a classifier
     clf = BernoulliNB()
 
-    cv = cross_validation.StratifiedKFold(Y, 5)
+    cv = cross_validation.StratifiedKFold(y, 5)
 
     precision = []
     recall = []
 
     for train, test in cv:
         X_train = X[train]
-        X_test = X[text]
+        X_test = X[test]
         y_train = y[train]
         y_test = y[test]
 
         clf.fit(X_train, y_train)
         y_hat = clf.predict(X_test)
-        p,r,_,_ = metrics.precision_recall_fscore_support(y_test, y_hat)
+        p, r, _, _ = metrics.precision_recall_fscore_support(y_test, y_hat)
         precision.append(p[1])
         recall.append(r[1])
+
+    probs = clf.feature_log_prob_[1] - clf.feature_log_prob_[0]
+    features = vectorizer.get_feature_names()
+
+    neg_words = sorted(zip(probs, features))[:70]
+
+    pos_words = sorted(zip(probs, features), reverse=True)[:70]
+
+    data = {'neg': neg_words, 'pos': pos_words}
+
+    with open('review_words.json', 'w') as fp:
+        json.dump(data, fp)
+
+    # print "precision:", precision
+    # print "recall:", recall
+    # # precision: [0.49899799599198397, 0.50997782705099781, 0.53636363636363638, 0.47765363128491622, 0.52771084337349394]
+    # # recall: [0.6484375, 0.59895833333333337, 0.61458333333333337, 0.4453125, 0.5703125]
+
 
 
 

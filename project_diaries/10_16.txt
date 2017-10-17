@@ -1,0 +1,47 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    General:
+        visualize feature words
+        write tests
+        integrate ratings into rec algorithm
+
+    genres page:
+        make genre graph better - what info am i trying to convey?
+
+
+if have time:
+    fix summary repeating problem
+    add error handling for when user gets to the end of the genres?
+    figure out how to clean up genre names - some are repetitive
+    make books sortable by attribute
+    make letters match regardless of capitalization
+        use regex if time -- http://xion.io/post/code/sqlalchemy-regex-filters.html
+    refactor flask routes to use Flask-login
+
+
+12pm
+    review words with mix of highly rated and mediumly rated books actually look worse
+    think the data is just more muddled when there are an uneven number of positive and negative ratings
+    i should focus on visualization rather than making tweaks to the machine learning
+    successfully selected only the number of genres with greater than 50 books -sidestepped SQL
+
+1-2 lunch
+
+2pm
+    trying to get colors to generate dynamically
+    success!
+
+3pm
+    checked in w/Henry
+    i am good with the amount of progress
+    want to try highlighting words in a review
+
+4pm
+    got classifier to work in Python
+    wrote feature words to review_words.json
+    found out that the feature words are very scattered in the reviews - each review has maybe one or two
+        Madame Bovary is there because not only is the book itself on the list, but three or four other classics that reference it. And people like to compare characters in their reviews.
+

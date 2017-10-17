@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
+
 db = SQLAlchemy()
 
 
@@ -134,6 +135,31 @@ def recommend(user):
             list_of_recommendations.append(book)
 
     return list_of_recommendations
+
+
+# def find_words():
+#     """Find a review with some of the words from the list of feature words"""
+
+#     json_string = open("review_words.json").read()
+#     review_dict = json.loads(json_string)
+
+#     # neg_words = []
+#     # pos_words = []
+
+#     # for item in review_dict["neg"]:
+#     #     neg_words.append(item[1])
+
+#     # for item in review_dict["pos"]:
+#     #     pos_words.append(item[1])
+
+#     reviews = Rating.query.filter(Rating.score != 3).all()
+
+#     for review in reviews:
+#         words = review.text.split()
+#         if "dnf"
+
+
+
 
 
 def connect_to_db(app):
