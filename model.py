@@ -158,15 +158,47 @@ def recommend(user):
 #         words = review.text.split()
 #         if "dnf"
 
+def example_data():
+    """Creates example data for testing purposes"""
+
+    #creates sample user
+    buffy = User(user_id=7, name="Buffy Summers", email="slayer@slayer.com", password="bangel4eva97")
+
+    #creates sample book
+    slayer_guide = Book(book_id=1,
+                        title="A Slayer's Guide to Slaying",
+                        author="The Council of Watchers",
+                        avg_rating=2.53,
+                        pic_url='https://vignette.wikia.nocookie.net/buffy/images/d/d3/Vampyr.jpg/revision/latest?cb=20120314223316',
+                        summary='In every generation there is a chosen one. She alone will stand against the vampires, the demons, and the forces of darkness. She is the slayer.',
+                        )
+
+    #creates sample genre
+    vampires = Genre(genre_id=1, name='vampires')
+
+    db.session.add_all([buffy, slayer_guide, vampires])
+    db.session.commit()
+
+    #must have two separate commits because of foreign key dependencies
+
+    #creates sample rating
+    rating = Rating(rating_id=1, book_id=1, user_id=7, score=1, text="Hated this. DNF.")
+
+    #creates sample book-genre
+    book_genre = BookGenre(book_genre_id=1, book_id=1, genre_id=1)
+
+    #creates sample user-genre
+    user_genre = UserGenre(user_genre_id=1, user_id=7, genre_id=1)
+
+    db.session.add_all([rating, book_genre, user_genre])
+    db.session.commit()
 
 
-
-
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///goodreads'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///goodreads'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

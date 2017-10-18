@@ -29,13 +29,13 @@
       {% endfor %}
     {% endwith %}
     </div>
-
     <div id="logout">
 
         <form action="/logout">
             <input type="submit" value="Logout">
         </form>
     </div>
+
     <div><a href="/">Homepage</a></div>
   </div>
 
@@ -49,6 +49,8 @@
 <script src="/static/ajax.js"></script>
 <!-- imports chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+
+{% block scripts %} {% endblock %}
 
 </body>
 </html>

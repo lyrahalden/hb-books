@@ -67,6 +67,9 @@ $('#faved-genres').on('click', ".faved-genres", function() {
 
 function displayRec(results){
     var books = results;
+    // if (books === {}){
+    //     $('#rec').html("No recommendations yet. Please favorite more genres!");
+    // }
     console.log(books)
     var book_recs = "";
     $.each(books, function(key, value) {
@@ -98,17 +101,3 @@ $(function() {
     });
 })
 
-// display genre info
-
-var options = { responsive: true };
-
-var ctx_genre = $("#genreChart").get(0).getContext("2d");
-
-$.get("/genre_info.json", function (data) {
-var myDonutChart = new Chart(ctx_genre, {
-                                        type: 'doughnut',
-                                        data: data,
-                                        options: options
-                                      });
-$('#genreLegend').html(myDonutChart.generateLegend());
-});

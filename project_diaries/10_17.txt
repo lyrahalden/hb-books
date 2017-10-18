@@ -1,0 +1,39 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    General:
+        write tests
+        integrate ratings into rec algorithm
+
+    genres page:
+        add another genre graph if time
+
+
+if have time:
+    fix summary repeating problem
+    add error handling for when user gets to the end of the genres?
+    figure out how to clean up genre names - some are repetitive
+    make books sortable by attribute
+    make letters match regardless of capitalization
+        use regex if time -- http://xion.io/post/code/sqlalchemy-regex-filters.html
+    refactor flask routes to use Flask-login
+
+
+11am
+    scrummed
+    working on review visualization
+    almost got it
+
+12pm
+    asked for help
+    got review bar chart working
+    read about testing
+
+1-2 lunch
+    got started writing flask tests
+    wrote flask tests
+
+5pm
+    up to 45% coverage

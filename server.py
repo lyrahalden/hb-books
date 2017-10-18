@@ -7,11 +7,13 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
-from model import Book, Genre, BookGenre, User, UserGenre, Rating, recommend, connect_to_db, db
+from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db
 
 from sqlalchemy import desc
 
 from random import randint
+
+import json
 
 app = Flask(__name__)
 
@@ -45,6 +47,44 @@ def book_list():
 
     books = Book.query.order_by(desc('avg_rating')).all()
     return render_template("all_books.html", books=books)
+
+
+@app.route("/reviews")
+def review_page():
+    """Make page for reviews graph"""
+
+    return render_template("reviews_page.html")
+
+
+@app.route("/reviews.json")
+def reviews():
+    """Visualize machine learning data from review analysis"""
+
+    json_string = open("review_words.json").read()
+    review_dict = json.loads(json_string)
+
+    data_dict = {
+        "labels": [],
+        "datasets": [
+            {
+                "label": "Log probability",
+                "backgroundColor": [],
+                "data": []
+            }
+        ]
+    }
+
+    for item in review_dict["neg"][:10]:
+        data_dict["labels"].append(item[1])
+        data_dict["datasets"][0]['data'].append(item[0])
+        data_dict["datasets"][0]["backgroundColor"].append(generate_colors())
+
+    for item in review_dict["pos"][:10]:
+        data_dict["labels"].append(item[1])
+        data_dict["datasets"][0]['data'].append(item[0])
+        data_dict["datasets"][0]["backgroundColor"].append(generate_colors())
+
+    return jsonify(data_dict)
 
 
 @app.route("/genres")
