@@ -7,11 +7,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
-from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db
+from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db, generate_colors
 
 from sqlalchemy import desc
-
-from random import randint
 
 import json
 
@@ -121,15 +119,6 @@ def show_genre_info():
             data_dict["datasets"][0]["backgroundColor"].append(generate_colors())
 
     return jsonify(data_dict)
-
-
-def generate_colors():
-    r = randint(0, 255)
-    g = randint(0, 255)
-    b = randint(0, 255)
-    a = randint(0, 255)
-
-    return "rgba(%s,%s,%s,%s)" % (r, g, b, a)
 
 
 @app.route("/autocomplete")

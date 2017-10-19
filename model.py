@@ -140,14 +140,16 @@ def recommend(user):
         elif len(set(user.genres) & set(book.genres)) > 2:
             list_of_recommendations.append(book)
 
-
-
-
-
-
     return list_of_recommendations
 
 
+def generate_colors():
+    r = randint(0, 255)
+    g = randint(0, 255)
+    b = randint(0, 255)
+    a = randint(0, 255)
+
+    return "rgba(%s,%s,%s,%s)" % (r, g, b, a)
 # def find_words():
 #     """Find a review with some of the words from the list of feature words"""
 

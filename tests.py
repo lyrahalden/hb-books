@@ -21,7 +21,7 @@ class FlaskTests(unittest.TestCase):
         """Tests header on homepage"""
 
         result = self.client.get("/")
-        self.assertIn("Book Recommendations", result.data)
+        self.assertIn("Novel Idea", result.data)
 
     def test_homepage_book_link(self):
         """Tests link to all_books on homepage"""
@@ -44,6 +44,7 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
             with c.session_transaction() as sess:
                 sess['email'] = True
 
+        # same as saying:
         # sess = self.client.session_transaction()
         # sess['email'] = True
 
