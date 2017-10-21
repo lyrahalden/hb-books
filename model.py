@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+from random import randint
+
 
 ##############################################################################
 # Model definitions
@@ -150,6 +152,7 @@ def generate_colors():
     a = randint(0, 255)
 
     return "rgba(%s,%s,%s,%s)" % (r, g, b, a)
+
 # def find_words():
 #     """Find a review with some of the words from the list of feature words"""
 
@@ -171,11 +174,13 @@ def generate_colors():
 #         words = review.text.split()
 #         if "dnf"
 
+
 def example_data():
     """Creates example data for testing purposes"""
 
-    #creates sample user
-    buffy = User(user_id=7, name="Buffy Summers", email="slayer@slayer.com", password="bangel4eva97")
+    #creates sample users
+    buffy = User(user_id=1, name="Buffy Summers", email="slayer@slayer.com", password="bangel4eva97")
+    giles = User(user_id=2, name="Rupert 'Ripper' Giles", email="watcherlibrarian@slayer.com", password="greenmug63")
 
     #creates sample book
     slayer_guide = Book(book_id=1,
@@ -189,19 +194,19 @@ def example_data():
     #creates sample genre
     vampires = Genre(genre_id=1, name='vampires')
 
-    db.session.add_all([buffy, slayer_guide, vampires])
+    db.session.add_all([buffy, giles, slayer_guide, vampires])
     db.session.commit()
 
     #must have two separate commits because of foreign key dependencies
 
     #creates sample rating
-    rating = Rating(rating_id=1, book_id=1, user_id=7, score=1, text="Hated this. DNF.")
+    rating = Rating(rating_id=1, book_id=1, user_id=1, score=1, text="Hated this. DNF.")
 
     #creates sample book-genre
     book_genre = BookGenre(book_genre_id=1, book_id=1, genre_id=1)
 
     #creates sample user-genre
-    user_genre = UserGenre(user_genre_id=1, user_id=7, genre_id=1)
+    user_genre = UserGenre(user_genre_id=1, user_id=1, genre_id=1)
 
     db.session.add_all([rating, book_genre, user_genre])
     db.session.commit()

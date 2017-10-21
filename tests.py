@@ -1,6 +1,7 @@
 import unittest
 from server import app, generate_colors
-from model import db, connect_to_db, example_data
+from model import db, connect_to_db, example_data, User
+from seed import set_val_user_id
 
 
 class FlaskTests(unittest.TestCase):
@@ -42,7 +43,7 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
 
         with self.client as c:
             with c.session_transaction() as sess:
-                sess['email'] = True
+                sess['email'] = "slayer@slayer.com"
 
         # same as saying:
         # sess = self.client.session_transaction()
@@ -52,6 +53,7 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
 
         db.create_all()
         example_data()
+        set_val_user_id()
 
     def tearDown(self):
         """Things to do after each test"""
@@ -63,9 +65,9 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
         """Tests all_books page"""
 
         result = self.client.get("/books")
+        #test that sample book is on page and that search feature is appearing
         self.assertIn("Search for a book title", result.data)
-
-    #test that sample book is on page
+        self.assertIn("The Council of Watchers", result.data)
 
     def test_user_page(self):
         """Tests all_users page"""
@@ -82,7 +84,7 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
     def test_user_page_not_logged_in(self):
         """Tests redirection to the homepage from a user page if user is not logged in"""
 
-        result = self.client.get("/users/1", follow_redirects=True)
+        result = self.client.get("/users/2", follow_redirects=True)
         self.assertIn("Sorry, you must log in to your account to view user details.", result.data)
         #log in buffy in setup, just check other user not able to access
 
@@ -99,20 +101,18 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
                                 data={"name": "Willow Rosenberg", "email": "wilhacks@aol.com",
                                     "password": "boyinaband"}, follow_redirects=True)
         self.assertIn("You have been registered and logged in! Yay!", result.data)
-        #user query the test db
-        #self.assertNotNone(user)
+        user = User.query.filter(User.email == "wilhacks@aol.com").first()
+        self.assertIsNotNone(user)
 
     def test_duplicate_registration(self):
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['email'] = True
         """Tests using the email of an already existing user"""
 
         result = self.client.post("/register",
                                 data={"name": "Kendra", "email": "slayer@slayer.com",
                                     "password": "me_only_shirt"}, follow_redirects=True)
         self.assertIn("Please try again with a different email.", result.data)
-        # user query this email
+        any_duplicate_users = User.query.filter(User.email == "slayer@slayer.com").all()
+        self.assertEqual(len(any_duplicate_users), 1)
 
     def test_log_in_wrong(self):
         """Tests notification if user mistypes email or password"""
@@ -131,7 +131,10 @@ class FlaskTestsLoggedInDatabase(unittest.TestCase):
                                 follow_redirects=True)
         self.assertIn("Welcome Buffy Summers!", result.data)
         self.assertNotIn("Login failed. Email or password was not correct.", result.data)
-        #assertEqual sess.get('email'), the email
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                self.assertEqual(sess['email'], "slayer@slayer.com")
 
     def test_log_out(self):
         """Tests logging out"""
