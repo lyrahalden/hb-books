@@ -19,8 +19,5 @@
 
 .homepage {
   background-size: cover;
-  background-image: url(/static/bookcase.jpg) no-repeat center center;
-}
-
-.messages {
+  background-image: url(static/bookcase.jpg) no-repeat center center;
 }
