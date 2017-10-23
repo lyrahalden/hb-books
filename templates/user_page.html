@@ -3,6 +3,8 @@
 
 {% block title %} User Profile Page {% endblock %}
 
+{% block flash %}
+{% endblock %}
 
 {% block content %}
 <hr>
@@ -22,31 +24,31 @@ Here are the books you have rated so far-
 <br><br>
 Take the time to let us know which genres are your favorite! It'll make our recommendations better.
 <br><br>
-<div id="faved-genres">
+<div id="faved-genres" class="btn-group btn-group-lg" role="group" aria-label="Favorite Genres">
 {% if user.genres %}
     Some of the genres you already love are:<br>
     <!-- <ul class="fav-genre-list"> -->
         {% for genre in user.genres %}
-            <button class="faved-genres">{{genre.name}}</button><br>
+            <button type="button" class="btn btn-default faved-genres">{{genre.name}}</button><br>
         {% endfor %}
     <!-- </ul> -->
     <br><br>
 {% endif %}
 </div>
 
-<div id="genres">
+<div id="genres" class="btn-group btn-group-lg" role="group" aria-label="Available Genres">
 Some genres we have books for are:<br>
     <ul class="genre-list">
     {% for genre in genres %}
 
-        <button class="usergenre">{{genre.name}}</button>
+        <button type="button" class="btn btn-default usergenre">{{genre.name}}</button>
         <br>
 
     {% endfor %}
     </ul>
 <p>Get more genres:<br>
-    <button id="back-genre-button">Back</button>
-    <button id="get-genre-button">More!</button>
+    <button type="button" class="btn btn-default" id="back-genre-button">Back</button>
+    <button type="button" class="btn btn-default" id="get-genre-button">More!</button>
   </p>
 </div>
 {% endblock %}

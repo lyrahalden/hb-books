@@ -1,4 +1,26 @@
-div .book {
+  .bookDiv {
+    display: inline-block;
+}
 
+  .bookImg {
+    display: block;
+}
 
+  .genreDiv {
+    border: 4px solid black;
+}
+
+  .logo {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    float: left;
+}
+
+.homepage {
+  background-size: cover;
+  background-image: url(/static/bookcase.jpg) no-repeat center center;
+}
+
+.messages {
 }

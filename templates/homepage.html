@@ -3,52 +3,34 @@
 
 {% block title %} Homepage {% endblock %}
 
+{% block flash %}
+<!-- Show flashed messages -->
+    <div class="messages">
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <div class="alert alert-warning">{{ message }}
+            <a href="/" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% endfor %}
+    {% endwith %}
+    </div>
+{% endblock %}
 
 {% block content %}
-
+<div class="homepage"></div>
 <h1>Novel Idea</h1>
 <h3>The perfect app to help you BOOK up your weekend!</h3>
 
 <h2>Books</h2>
-<p><a href="/books">View all books</a></p>
+<p><a href="/books">Search for books</a></p>
 
-<h2>Users</h2>
-<p><a href="/users">View all users</a></p>
+<!-- <h2>Users</h2>
+<p><a href="/users">View all users</a></p> -->
 
 <h2>Genres</h2>
-<p><a href="/genres">View all genres</a></p>
+<p><a href="/genres">View books by genre</a></p>
 
 <br><br>
 
-<h2>Register for an account here!</a></h2>
-
-<form action="/register" method=POST>
-  Full Name:<br>
-  <input type="text" name="name">
-  <br>
-  Email:<br>
-  <input type="text" name="email">
-  <br>
-  Password:<br>
-  <input type="password" name="password">
-  <br>
-  <br>
-  <input type="submit" value="Submit">
-</form>
-<br>
-
-<h1>Login here!</h1>
-
-<form action="/login" method=POST>
-  Email:<br>
-  <input type="text" name="email">
-  <br>
-  Password:<br>
-  <input type="password" name="password">
-  <br>
-  <br>
-  <input type="submit" value="Submit">
-</form>
 
 
 {% endblock %}

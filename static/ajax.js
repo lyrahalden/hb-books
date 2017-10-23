@@ -35,7 +35,7 @@ $("#back-genre-button").on('click', function() {
 function addGenre(results){
 
     if (results['genre'] !== "nope"){
-        $('#faved-genres').append("<button class=faved-genres>"+results["genre"]+"</button><br>");
+        $('#faved-genres').append("<button type='button' class='btn btn-default faved-genres'>"+results["genre"]+"</button><br>");
     }
     alert(results["message"]);
 
@@ -43,7 +43,6 @@ function addGenre(results){
 
 $('#genres').on('click', ".usergenre", function() {
     var genre = $(this).html();
-    console.log(genre);
     $.post("/add-a-genre", {"genre_name": genre}, addGenre);
 });
 
@@ -58,7 +57,6 @@ function removeGenre(results){
 
 $('#faved-genres').on('click', ".faved-genres", function() {
     var genre = $(this).html();
-    console.log(genre);
     $.post("/remove-a-genre", {"genre_name": genre}, removeGenre);
 });
 

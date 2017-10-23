@@ -1,0 +1,18 @@
+Goals -
+write down hour by hour
+take stretch breaks
+
+To do:
+    prettify!
+    github clean up
+
+
+11am
+    scrummed
+    added a nav bar and a logo
+    included log in/log out button functionality
+
+1-2 lunch
+
+2pm
+    straightening out some logo size bugs

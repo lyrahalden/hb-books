@@ -17,7 +17,9 @@ app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
+#change to True if debugging
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -29,7 +31,26 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
-    return render_template('homepage.html')
+    try:
+        user = User.query.filter_by(email=session["email"]).first()
+    except KeyError:
+        return render_template('homepage.html')
+
+    return render_template('homepage.html', user=user)
+
+
+@app.route('/login')
+def log_in_page():
+    """Displays login form"""
+
+    return render_template('login.html')
+
+
+@app.route('/register')
+def register_page():
+    """Displays registration form"""
+
+    return render_template('register.html')
 
 
 @app.route("/users")
@@ -44,15 +65,19 @@ def user_list():
 def book_list():
     """Show list of books."""
 
+    user = User.query.filter_by(email=session["email"]).first()
     books = Book.query.order_by(desc('avg_rating')).all()
-    return render_template("all_books.html", books=books)
+
+    return render_template("all_books.html", books=books, user=user)
 
 
 @app.route("/reviews")
 def review_page():
     """Make page for reviews graph"""
 
-    return render_template("reviews_page.html")
+    user = User.query.filter_by(email=session["email"]).first()
+
+    return render_template("reviews_page.html", user=user)
 
 
 @app.route("/reviews.json")
@@ -90,8 +115,9 @@ def reviews():
 def all_genres():
     """Show all genres in db"""
 
+    user = User.query.filter_by(email=session["email"]).first()
     genres = Genre.query.order_by('name').all()
-    return render_template("all_genres.html", genres=genres)
+    return render_template("all_genres.html", genres=genres, user=user)
 
 
 @app.route("/genre_info.json")
@@ -229,7 +255,7 @@ def remove_a_genre():
     return jsonify(matching)
 
 
-@app.route("/register", methods=["POST"])
+@app.route("/register-form", methods=["POST"])
 def confirm_registration():
     """Confirms registration"""
     name = request.form.get("name")
@@ -250,7 +276,7 @@ def confirm_registration():
     return redirect("/")
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login-form", methods=["POST"])
 def log_in():
     """Logs a user in"""
 
@@ -265,8 +291,9 @@ def log_in():
         if user and password == user.password:
             session['email'] = email
             flash("You have been logged in!")
-            genres = Genre.query.limit(3)
-            return render_template("user_page.html", user=user, genres=genres)
+            # genres = Genre.query.limit(3)
+            return redirect("/users/" + str(user.user_id))
+            # return render_template("user_page.html", user=user, genres=genres)
         else:
             flash("Login failed. Email or password was not correct.")
             return redirect("/")
@@ -278,10 +305,9 @@ def log_in():
 
 @app.route("/recommend")
 def make_recommendations():
+    """calls the recommend function to recommend books to the user"""
 
-    email = session["email"]
-
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=session["email"]).first()
 
     list_of_recommendations = recommend(user)
 
@@ -337,8 +363,8 @@ def log_out():
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
-    # app.debug = True
-    # app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
+    app.debug = True
+    app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
     connect_to_db(app)
 
