@@ -68,7 +68,6 @@ function displayRec(results){
     // if (books === {}){
     //     $('#rec').html("No recommendations yet. Please favorite more genres!");
     // }
-    console.log(books)
     var book_recs = "";
     $.each(books, function(key, value) {
         book_recs += "<a class=usergenre href='/books/"+key+"'>"+value[0]+" by "+value[1]+"</a><br>";
@@ -95,7 +94,13 @@ $(function() {
         location.href = url;
 
         // $('#results').html( "Selected: " + ui.item.value );
-      }
+      },
+
+      html: true,
+
+      open: function(event, ui) {
+            $(".ui-autocomplete").css("z-index", 1000);
+        }
     });
-})
+});
 

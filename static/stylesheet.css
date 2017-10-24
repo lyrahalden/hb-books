@@ -32,18 +32,38 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+/*autocomplete search styling*/
 
-
-/*.background::after {
-  content: "";
-/*  background-size: cover;
-/*  background-image: url("../static/bookcase.jpg");
-  background-position: center center;
-  opacity: 0.3;
-  z-index: -99;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+/* highlight results */
+.ui-autocomplete span.hl_results {
+    background-color: #ffff66;
 }
+
+/* loading - the AJAX indicator */
+.ui-autocomplete-loading {
+    background: white;
+    /*url('../static/loading.gif') right center no-repeat;*/
+}
+
+/* scroll results */
+.ui-autocomplete {
+    background: white;
+    max-height: 250px;
+    max-width: 190px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding for vertical scrollbar */
+    padding-right: 5px;
+}
+
+.ui-autocomplete li {
+    font-size: 16px;
+}
+
+/* IE 6 doesn't support max-height
+* we use height instead, but this forces the menu to always be this tall
 */
+* html .ui-autocomplete {
+    height: 250px;
+}
