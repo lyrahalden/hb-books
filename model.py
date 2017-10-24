@@ -130,11 +130,11 @@ def recommend(user):
 
     list_of_recommendations = []
 
-    #takes user's ratings of books into account
-    if user.ratings:
-        for r in user.ratings:
-            if r.score == 4 or r.score == 5:
-                list_of_recommendations.append(r.book)
+    # #takes user's ratings of books into account
+    # if user.ratings:
+    #     for r in user.ratings:
+    #         if r.score == 4 or r.score == 5:
+    #             list_of_recommendations.append(r.book)
 
     for book in book_genre_dict.keys():
         if set(user.genres) <= set(book.genres):

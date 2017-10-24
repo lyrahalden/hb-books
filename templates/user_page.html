@@ -5,39 +5,37 @@
 
 
 {% block content %}
-<hr>
-<br>
+<div class="jumbotron">
 <div class="container">
 <h1>Welcome {{ user.name }}!</h1>
-<h1>Get a recommendation!</h1>
-</div>
+<h2>Get a recommendation!</h2>
+<button type="button" class="btn btn-default btn-lg" id="rec-button">DO IT</button>
+</div></div>
+<div class="container" id="rec"></div>
 <br>
-<button type="button" class="btn btn-default" id="rec-button">DO IT</button>
-<div id="rec"></div>
-<br>
-Here are the books you have rated so far-
-<ul>
+<div class="container">
+<h2 class="subtitle">Your ratings!</h2>
 {% for rating in user.ratings if user.ratings%}
-    <li>Rated the book <a href="/books/{{ rating.book.book_id }}">{{ rating.book.title }}</a>: {{ rating.score }}</li>
+    <button type="button" class="btn btn-default"><a class="link" href="/books/{{ rating.book.book_id }}">{{ rating.book.title }}</a>: {{ rating.score }} stars</button>
 {% endfor %}
-</ul>
-<br><br>
-Take the time to let us know which genres are your favorite! It'll make our recommendations better.
-<br><br>
+</div>
+<div class="container">
+<h3>Take the time to let us know which genres are your favorite! <br> It'll make our recommendations better.</h3>
+
 <div id="faved-genres" class="btn-group btn-group-lg" role="group" aria-label="Favorite Genres">
 {% if user.genres %}
-    Some of the genres you already love are:<br>
+    <h3>Some of the genres you already love are:</h3>
     <!-- <ul class="fav-genre-list"> -->
         {% for genre in user.genres %}
             <button type="button" class="btn btn-default faved-genres">{{genre.name}}</button>
         {% endfor %}
     <!-- </ul> -->
 {% endif %}
-</div>
+</div></div>
 <br><br>
 
-<div id="genres">
-Some genres we have books for are:<br>
+<div class="container" id="genres">
+<h3>How do you feel about these genres?:</h3>
     <div class="genre-list btn-group btn-group-lg" role="group" aria-label="Available Genres">
     {% for genre in genres %}
 
@@ -47,10 +45,10 @@ Some genres we have books for are:<br>
     </div>
 </div>
 <br><br>
-<div id="more-back" class="btn-group btn-group-lg" role="group" aria-label="Get More Genres">
-Get more genres:<br>
-    <button type="button" class="btn btn-default" id="back-genre-button">Back</button>
-    <button type="button" class="btn btn-default" id="get-genre-button">More!</button>
+<div class="container" id="more-back" class="btn-group btn-group-lg" role="group" aria-label="Get More Genres">
+<h3>Get more genres:</h3>
+    <button type="button" class="btn btn-default btn-lg" id="back-genre-button">Back</button>
+    <button type="button" class="btn btn-default btn-lg" id="get-genre-button">More!</button>
 
 </div>
 {% endblock %}

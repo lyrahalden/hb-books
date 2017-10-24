@@ -9,25 +9,29 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+            <div class="panel panel-default">
+  <div class="panel-body">
 <h2 class="title">{{ book.title }}</h2>
 
 <h2 class="title">by {{ book.author }}</h2>
 
 <p class="subtitle">Average rating on Goodreads: {{book.avg_rating}} stars</p>
 
-<p class="subtitle">{{book.summary}}</p>
+<p class="summary">{{book.summary}}</p>
 
 <img class="bookImg" src={{ book.pic_url}}>
-</div>
+</div></div></div>
 
 <div class="col-md-4">
 {%if book.genres %}
 <button type="button" class="btn btn-default"><a class="link" href = "/genres">Genres:</a></button>
+<div class="panel panel-default">
+  <div class="panel-body">
     <ul id="book-genres">
         {% for genre in book.genres %}
         <li>{{genre.name}}</li>
         {% endfor %}
-    </ul>
+    </ul></div></div>
 
 {% endif %}
 <br><br>
@@ -50,6 +54,7 @@
     <option>4</option>
     <option>5</option>
   </select>
+  <input type="submit" value="Submit">
 </div>
 <!-- <form class="rating-form" action="/rate" method=POST>
   Enter your rating as a number from 1 to 5, where 1 is the lowest score:<br>

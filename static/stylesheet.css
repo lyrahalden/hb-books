@@ -53,13 +53,17 @@ div.col{
   font-size: 30px;
 }
 
-.btn-link, .link {
+.btn-link, .link, #rec-button{
   color: #159460;
 }
 
-#book-genres #rating-form {
-  font-size: 25px;
+ul#book-genres, #rating-form {
+  font-size: 18px;
 
+}
+
+p.summary {
+  font-size: 12px;
 }
 
 /*autocomplete search styling*/

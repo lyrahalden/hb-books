@@ -70,7 +70,7 @@ function displayRec(results){
     // }
     var book_recs = "";
     $.each(books, function(key, value) {
-        book_recs += "<a class=usergenre href='/books/"+key+"'>"+value[0]+" by "+value[1]+"</a><br>";
+        book_recs += "<button type='button' class='btn btn-default'><a class='link' href='/books/"+key+"'>"+value[0]+" by "+value[1]+"</a></button>";
 
     });
     $('#rec').html(book_recs);
