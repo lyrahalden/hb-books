@@ -4,16 +4,15 @@
 
 {% block content %}
 
+    <div class="title">
     <h2>Books</h2>
-    <div>
+    </div>
+    <div class="search-box">
         Search for a book title:<input name="autocomplete" type="text" id="autocomplete"/>
     </div>
-    <br><br>
-    <br><br>
-    <br><br>
-    <br><br>
-    <br><br>
+    <div class="review-link">
     <a href="/reviews">How are these books reviewed?</a>
+    </div>
       {% for book in books %}
       <div class="bookDiv">
           {{ book.title }}
