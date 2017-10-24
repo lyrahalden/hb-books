@@ -17,7 +17,26 @@
     float: left;
 }
 
-.homepage {
+body {
+  height: 100%;
   background-size: cover;
-  background-image: url(static/bookcase.jpg) no-repeat center center;
+  background-position: center center;
+  background-image: url("../static/bookcase_t.jpg")
+
 }
+
+
+
+/*.background::after {
+  content: "";
+/*  background-size: cover;
+/*  background-image: url("../static/bookcase.jpg");
+  background-position: center center;
+  opacity: 0.3;
+  z-index: -99;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+*/

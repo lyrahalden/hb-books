@@ -17,8 +17,9 @@
         <a class="navbar-brand" href="/">
         <img class="logo" alt="owl with book logo" src="/static/owl-book-128.svg">
         </a>
-    <nav class="navbar nav-left">
-      <p class="navbar-text">Novel Idea</p>
+        <p class="navbar-text">Novel Idea</p>
+    <nav class="navbar navbar-right">
+
           {% if "email" in session %}
             <button type="button" class="btn btn-default navbar-btn"><a href="/users/{{user.user_id}}">Your Profile</a></button>
             <button type="button" class="btn btn-default navbar-btn"><a href="/logout">Log Out</a></button>
@@ -46,7 +47,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
 
 {% block scripts %} {% endblock %}
-
 </body>
 </html>
 
