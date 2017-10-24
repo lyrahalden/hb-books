@@ -4,15 +4,15 @@
 
 {% block content %}
 
-    <div class="title">
-    <h2>Books</h2>
+    <div class="jumbotron">
+      <div class="container">
+    <h1 class="title">Books</h1>
+    </div></div>
+    <div class="search-box container">
+        <h3 class="search-text">Search for a book title:</h3><input name="autocomplete" type="text" class="form control input-lg" id="autocomplete"/>
     </div>
-    <div class="search-box">
-        Search for a book title:<input name="autocomplete" type="text" id="autocomplete"/>
-    </div>
-    <div class="review-link">
-    <a href="/reviews">How are these books reviewed?</a>
-    </div>
+    <br><br>
+
       {% for book in books %}
       <div class="bookDiv">
           {{ book.title }}
@@ -21,7 +21,7 @@
           <br>
           Average Goodreads Rating: {{ book.avg_rating }}
           <br>
-          Rate this book <a href="/books/{{ book.book_id }}">here</a>
+          Rate this book <button type="button" class="btn btn-default"><a class='link' href="/books/{{ book.book_id }}">here</a></button>
           <br>
           <img class="bookImg" src={{ book.pic_url}}>
           <br>

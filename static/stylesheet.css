@@ -1,11 +1,13 @@
   .bookDiv {
     display: inline-block;
-    border: 4px gray solid;
+    border: 4px #D89C99 solid;
+    color: #262625;
+    font-size: 14px;
 }
 
   .bookImg {
     display: block;
-    height: 200px;
+    height: 300px;
 
 }
 
@@ -28,8 +30,31 @@ body {
 
 }
 
+div.container h1 {
+  color: #4A4948;
+  font-weight: bold;
+}
+
+div.col{
+  color: #D89C99;
+}
+
 .btn {
   font-family: 'Open Sans', sans-serif;
+}
+
+.navbar-text {
+  font-weight: bold;
+  font-size: 16px;
+  padding-top: 10px;
+}
+
+.search-text{
+  font-size: 30px;
+}
+
+.btn-link, .link {
+  color: #159460;
 }
 
 /*autocomplete search styling*/
@@ -49,7 +74,7 @@ body {
 .ui-autocomplete {
     background: white;
     max-height: 250px;
-    max-width: 190px;
+    max-width: 270px;
     overflow-y: auto;
     /* prevent horizontal scrollbar */
     overflow-x: hidden;

@@ -3,44 +3,36 @@
 
 {% block title %} Homepage {% endblock %}
 
-{% block flash %}
-<!-- Show flashed messages -->
-    <div class="messages">
-    {% with messages = get_flashed_messages() %}
-        {% for message in messages %}
-          <div class="alert alert-warning">{{ message }}
-            <a href="/" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
-      {% endfor %}
-    {% endwith %}
-    </div>
-{% endblock %}
-
 {% block content %}
 <div class="jumbotron">
   <div class="container">
 
-<h1>Novel Idea</h1>
-<p>The perfect app to help you BOOK up your weekend!</p>
+<h1 class="title">Novel Idea</h1>
+<p class="subtitle">The perfect app to help you BOOK up your weekend!</p>
 
 </div></div>
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
-      <h2>Books</h2>
-      <p><a href="/books">Search for books</a></p>
+    <div class="col-md-4">
+      <h2 class="subtitle">Books</h2>
+      <button type="button" class="btn btn-default"><a class="link" href="/books">View all books</a></button>
     </div>
 <!-- <h2>Users</h2>
 <p><a href="/users">View all users</a></p> -->
 
-    <div class="col-md-6">
-      <h2>Genres</h2>
-      <p><a href="/genres">View books by genre</a></p>
+    <div class="col-md-4">
+      <h2 class="subtitle">Genres</h2>
+      <button type="button" class="btn btn-default"><a class="link" href="/genres">View genre breakdown</a></button>
     </div>
+
+    <div class="col-md-4">
+      <h2 class="subtitle">Reviews</h2>
+    <button type="button" class="btn btn-default"><a class = "link" href="/reviews">How are these books reviewed?</a></button>
+    </div>
+
   </div>
 </div>
-
-
 
 
 {% endblock %}

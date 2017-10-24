@@ -3,15 +3,15 @@
 
 {% block title %} User Profile Page {% endblock %}
 
-{% block flash %}
-{% endblock %}
 
 {% block content %}
 <hr>
 <br>
-Welcome {{ user.name }}!
+<div class="container">
+<h1>Welcome {{ user.name }}!</h1>
+<h1>Get a recommendation!</h1>
+</div>
 <br>
-Get a recommendation!
 <button type="button" class="btn btn-default" id="rec-button">DO IT</button>
 <div id="rec"></div>
 <br>

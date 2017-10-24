@@ -5,19 +5,19 @@
 
 
 {% block content %}
-<hr>
-<br>
-Book title: {{ book.title }}
-<br>
-<br>
-Author name: {{ book.author }}
-<br>
-<br>
-Average rating on Goodreads: {{book.avg_rating}}
-<br>
-<p> Summary: {{book.summary}} </p>
+<!-- <div class="jumbotron"> -->
+  <div class="container">
+<h2 class="title">{{ book.title }}</h2>
+
+<h2 class="title">by {{ book.author }}</h2>
+
+<p class="subtitle">Average rating on Goodreads: {{book.avg_rating}} stars</p>
+
+<p class="subtitle">{{book.summary}}</p>
+
 <img class="bookImg" src={{ book.pic_url}}>
-<br><br>
+</div>
+<!-- </div> -->
 {%if book.genres %}
 <a href = "/genres">Genres:</a>
 <div>

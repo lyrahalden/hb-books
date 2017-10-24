@@ -25,17 +25,25 @@
     <nav class="navbar navbar-right">
 
           {% if "email" in session %}
-            <button type="button" class="btn btn-default navbar-btn"><a href="/users/{{user.user_id}}">Your Profile</a></button>
-            <button type="button" class="btn btn-default navbar-btn"><a href="/logout">Log Out</a></button>
+            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/users/{{user.user_id}}">Your Profile</a></button>
+            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/logout">Log Out</a></button>
           {% else %}
-            <button type="button" class="btn btn-default navbar-btn"><a href="/login">Log In</a></button>
-            <button type="button" class="btn btn-default navbar-btn"><a href="/register">Register</a></button>
+            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/login">Log In</a></button>
+            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/register">Register</a></button>
           {% endif %}
     </nav>
     </div>
     </header>
 
-{% block flash %} {% endblock %}
+<!-- Show flashed messages -->
+    <div class="messages">
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <div class="alert alert-warning">{{ message }}
+            <a href="/" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+      {% endfor %}
+    {% endwith %}
+    </div>
 
   {% block content %} CONTENT GOES HERE {% endblock %}
 
