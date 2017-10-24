@@ -91,7 +91,7 @@ def reviews():
         "labels": [],
         "datasets": [
             {
-                "label": "Log probability",
+                "label": "Log Probability",
                 "backgroundColor": [],
                 "data": []
             }

@@ -5,8 +5,10 @@
 
 
 {% block content %}
-<!-- <div class="jumbotron"> -->
-  <div class="container">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
 <h2 class="title">{{ book.title }}</h2>
 
 <h2 class="title">by {{ book.author }}</h2>
@@ -17,31 +19,45 @@
 
 <img class="bookImg" src={{ book.pic_url}}>
 </div>
-<!-- </div> -->
+
+<div class="col-md-4">
 {%if book.genres %}
-<a href = "/genres">Genres:</a>
-<div>
-    <ul>
+<button type="button" class="btn btn-default"><a class="link" href = "/genres">Genres:</a></button>
+    <ul id="book-genres">
         {% for genre in book.genres %}
         <li>{{genre.name}}</li>
         {% endfor %}
     </ul>
-</div>
-{% endif %}
 
-{% if rating %}
-You have given this book a {{rating.score}}
 {% endif %}
 <br><br>
-<a href = "/books">Go back to main books page</a>
+<button type="button" class="btn btn-default"><a class="link" href="/books">Go back to main books page</a></button>
+</div>
+<div class="col-md-4">
+<button type="button" class="btn btn-default"><a class="link" href = "/reviews">Reviews:</a></button>
+{% if rating %}
+<div class="rating">
+    You have given this book a {{rating.score}}
+    </div>
+{% endif %}
 <br>
-<br>
-<form action="/rate" method=POST>
+<div class="form-group">
+  <label for="sel1">Enter your rating as a number from 1 to 5, where 1 is the lowest score</label>
+  <select class="form-control" id="sel1">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+  </select>
+</div>
+<!-- <form class="rating-form" action="/rate" method=POST>
   Enter your rating as a number from 1 to 5, where 1 is the lowest score:<br>
   <input type="text" name="score">
   <input type="hidden" name="book" value={{ book.book_id }}>
   <input type="submit" value="Submit">
-</form>
+</form> -->
+</div></div><div>
 
 
 {% endblock %}

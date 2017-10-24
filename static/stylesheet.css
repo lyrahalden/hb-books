@@ -57,6 +57,11 @@ div.col{
   color: #159460;
 }
 
+#book-genres #rating-form {
+  font-size: 25px;
+
+}
+
 /*autocomplete search styling*/
 
 /* highlight results */
