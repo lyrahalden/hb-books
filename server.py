@@ -237,7 +237,6 @@ def remove_a_genre():
     """Removes the faved genre a user has clicked from their list of faves"""
 
     genre_name = request.form.get("genre_name")
-    print request.form.get("genre_name")
     user_email = session["email"]
 
     matching_genre = Genre.query.filter(Genre.name.like("%"+genre_name+"%")).first()
@@ -250,7 +249,6 @@ def remove_a_genre():
 
     matching = {}
     matching["genre"] = matching_genre.name
-    print matching
 
     return jsonify(matching)
 
@@ -291,9 +289,7 @@ def log_in():
         if user and password == user.password:
             session['email'] = email
             flash("You have been logged in!")
-            # genres = Genre.query.limit(3)
             return redirect("/users/" + str(user.user_id))
-            # return render_template("user_page.html", user=user, genres=genres)
         else:
             flash("Login failed. Email or password was not correct.")
             return redirect("/")
