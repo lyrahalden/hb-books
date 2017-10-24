@@ -36,15 +36,15 @@ Take the time to let us know which genres are your favorite! It'll make our reco
 </div>
 <br><br>
 
-<div id="genres" class="btn-group btn-group-lg" role="group" aria-label="Available Genres">
+<div id="genres">
 Some genres we have books for are:<br>
-   <!--  <ul class="genre-list"> -->
+    <div class="genre-list btn-group btn-group-lg" role="group" aria-label="Available Genres">
     {% for genre in genres %}
 
         <button type="button" class="btn btn-default usergenre">{{genre.name}}</button>
 
     {% endfor %}
-   <!--  </ul> -->
+    </div>
 </div>
 <br><br>
 <div id="more-back" class="btn-group btn-group-lg" role="group" aria-label="Get More Genres">

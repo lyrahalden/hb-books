@@ -7,7 +7,7 @@ function showGenres(results) {
     var genres = results;
     var new_genres = "";
     $.each(genres, function(key, value) {
-        new_genres += "<button class=usergenre>"+value+"</button><br>";
+        new_genres += "<button type='button' class='btn btn-default usergenre'>"+value+"</button>";
     });
     $('.genre-list').html(new_genres);
 
