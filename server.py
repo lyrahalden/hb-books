@@ -286,8 +286,6 @@ def log_in():
 
     user = db.session.query(User).filter_by(email=email).first()
 
-    # hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf8'), bcrypt.gensalt(10))
-
     try:
         user.user_id
 
