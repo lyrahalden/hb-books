@@ -6,6 +6,7 @@ import json
 
 from model import connect_to_db, db
 from server import app
+import bcrypt
 # from datetime import datetime
 
 
@@ -86,7 +87,9 @@ def load_users():
         email = rows[2]
         password = rows[3]
 
-        user = User(user_id=user_id, name=name, email=email, password=password)
+        hashedPassword = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt(10))
+
+        user = User(user_id=user_id, name=name, email=email, password=hashedPassword)
 
         db.session.add(user)
 

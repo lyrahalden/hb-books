@@ -9,9 +9,11 @@ from flask import (Flask, render_template, redirect, request, flash,
 
 from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db, generate_colors
 
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 
 import json
+
+import bcrypt
 
 app = Flask(__name__)
 
@@ -153,7 +155,7 @@ def search():
 
     param = request.args.get("term")
 
-    books = Book.query.filter(Book.title.like('%'+param+'%')).all()
+    books = Book.query.filter(Book.title.ilike('%'+param+'%')).all()
 
     results = []
 
@@ -258,14 +260,15 @@ def confirm_registration():
     """Confirms registration"""
     name = request.form.get("name")
     email = request.form.get("email")
-    password = request.form.get("password")
+    submittedPassword = request.form.get("password")
 
     duplicates = db.session.query(User).filter_by(email=email).all()
 
     if duplicates:
         flash("This email is already registered. Please try again with a different email.")
     else:
-        new_user = User(name=name, email=email, password=password)
+        hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
+        new_user = User(name=name, email=email, password=hashedPassword)
         db.session.add(new_user)
         db.session.commit()
         flash("You have been registered and logged in! Yay!")
@@ -283,10 +286,12 @@ def log_in():
 
     user = db.session.query(User).filter_by(email=email).first()
 
+    # hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf8'), bcrypt.gensalt(10))
+
     try:
         user.user_id
 
-        if user and password == user.password:
+        if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
             session['email'] = email
             flash("You have been logged in!")
             return redirect("/users/" + str(user.user_id))

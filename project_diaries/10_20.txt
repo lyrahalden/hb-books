@@ -11,12 +11,12 @@ To do:
 if have time:
     fix summary repeating problem
     add error handling for when user gets to the end of the genres?
-    figure out how to clean up genre names - some are repetitive
+    add error handling for when user pushes "back" button one too many times
     make books sortable by attribute
-    make letters match regardless of capitalization
-        use regex if time -- http://xion.io/post/code/sqlalchemy-regex-filters.html
     refactor flask routes to use Flask-login
     add another genre graph
+    add Oauth
+    test in Selenium
 
 11am
     scrummed
