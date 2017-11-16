@@ -7,6 +7,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify)
 
+from flask_login import LoginManager, login_user, login_required, logout_user
+
 from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db, generate_colors
 
 from sqlalchemy import desc, func
@@ -18,7 +20,7 @@ import bcrypt
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = "hostesswiththemostest"
 #change to True if debugging
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
@@ -27,6 +29,14 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
 app.jinja_env.undefined = StrictUndefined
+
+
+#use flask-login to instantiate a login_manager and tie it to the flask app
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+#sets a view for if a user tries to access a login_required route
+login_manager.login_view = "/login"
 
 
 @app.route('/')
@@ -39,6 +49,11 @@ def index():
         return render_template('homepage.html')
 
     return render_template('homepage.html', user=user)
+
+
+@login_manager.user_loader
+def load_user(email):
+    return User.query.filter_by(email=email).first()
 
 
 @app.route('/login')
@@ -55,15 +70,76 @@ def register_page():
     return render_template('register.html')
 
 
-@app.route("/users")
-def user_list():
-    """Show list of users."""
+@app.route("/register-form", methods=["POST"])
+def confirm_registration():
+    """Confirms registration"""
+    name = request.form.get("name")
+    email = request.form.get("email")
+    submittedPassword = request.form.get("password")
 
-    users = User.query.all()
-    return render_template("all_users.html", users=users)
+    duplicates = db.session.query(User).filter_by(email=email).all()
+
+    if duplicates:
+        flash("This email is already registered. Please try again with a different email.")
+    else:
+        hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
+        new_user = User(name=name, email=email, password=hashedPassword)
+        db.session.add(new_user)
+        login_user(new_user)
+        db.session.commit()
+        flash("You have been registered and logged in! Yay!")
+        # session['email'] = email
+
+    return redirect("/")
+
+
+@app.route("/login-form", methods=["POST"])
+def log_in():
+    """Logs a user in"""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = db.session.query(User).filter_by(email=email).first()
+
+    try:
+        user.user_id
+
+        if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
+            # session['email'] = email
+            login_user(user)
+            flash("You have been logged in!")
+            return redirect("/users/" + str(user.user_id))
+        else:
+            flash("Login failed. Email or password was not correct.")
+            return redirect("/")
+
+    except AttributeError:
+        flash("Login failed. Email or password was not correct.")
+        return redirect("/")
+
+
+@app.route("/logout")
+@login_required
+def log_out():
+    """Logs the user out"""
+    logout_user()
+    # del session['email']
+    flash("You are logged out!")
+
+    return redirect("/")
+
+
+# @app.route("/users")
+# def user_list():
+#     """Show list of users."""
+
+#     users = User.query.all()
+#     return render_template("all_users.html", users=users)
 
 
 @app.route("/books")
+@login_required
 def book_list():
     """Show list of books."""
 
@@ -74,6 +150,7 @@ def book_list():
 
 
 @app.route("/reviews")
+@login_required
 def review_page():
     """Make page for reviews graph"""
 
@@ -114,6 +191,7 @@ def reviews():
 
 
 @app.route("/genres")
+@login_required
 def all_genres():
     """Show all genres in db"""
 
@@ -166,6 +244,7 @@ def search():
 
 
 @app.route("/users/<some_id>")
+@login_required
 def user_details(some_id):
     """Shows user details."""
 
@@ -180,6 +259,7 @@ def user_details(some_id):
 
 
 @app.route("/books/<some_id>")
+@login_required
 def book_details(some_id):
     """Shows book details."""
 
@@ -255,53 +335,6 @@ def remove_a_genre():
     return jsonify(matching)
 
 
-@app.route("/register-form", methods=["POST"])
-def confirm_registration():
-    """Confirms registration"""
-    name = request.form.get("name")
-    email = request.form.get("email")
-    submittedPassword = request.form.get("password")
-
-    duplicates = db.session.query(User).filter_by(email=email).all()
-
-    if duplicates:
-        flash("This email is already registered. Please try again with a different email.")
-    else:
-        hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
-        new_user = User(name=name, email=email, password=hashedPassword)
-        db.session.add(new_user)
-        db.session.commit()
-        flash("You have been registered and logged in! Yay!")
-        session['email'] = email
-
-    return redirect("/")
-
-
-@app.route("/login-form", methods=["POST"])
-def log_in():
-    """Logs a user in"""
-
-    email = request.form.get("email")
-    password = request.form.get("password")
-
-    user = db.session.query(User).filter_by(email=email).first()
-
-    try:
-        user.user_id
-
-        if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
-            session['email'] = email
-            flash("You have been logged in!")
-            return redirect("/users/" + str(user.user_id))
-        else:
-            flash("Login failed. Email or password was not correct.")
-            return redirect("/")
-
-    except AttributeError:
-        flash("Login failed. Email or password was not correct.")
-        return redirect("/")
-
-
 @app.route("/recommend")
 def make_recommendations():
     """calls the recommend function to recommend books to the user"""
@@ -347,16 +380,6 @@ def rate_book():
     except KeyError:
         flash("Not a valid user logged in!")
         return redirect("/")
-
-
-@app.route("/logout")
-def log_out():
-    """Logs the user out"""
-
-    del session['email']
-    flash("You are logged out!")
-
-    return redirect("/")
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ entrypoints==0.2.3
 enum34==1.1.6
 Flask==0.12.2
 Flask-DebugToolbar==0.10.1
+Flask-Login==0.4.0
 Flask-SQLAlchemy==2.3.0
 functools32==3.2.3.post2
 glob2==0.6
