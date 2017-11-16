@@ -7,8 +7,7 @@ Novel Idea is my invidual project at Hackbright, made in 4.5 weeks. Novel Idea w
 * [Tech Stack](#tech-stack)
 * [Features](#features)
 * [Setup/Installation](#installation)
-* [To-Do](#future)
-* [License](#license)
+
 
 ## <a name="tech-stack"></a>Tech Stack
 
@@ -50,7 +49,7 @@ To have this app running on your local computer, please follow the below steps:
 
 Clone repository:
 ```
-$ git clone https://github.com/agnaite/planty.git
+$ git clone https://github.com/lyrahall14/hb-books
 ```
 Create a virtual environment:
 ```
@@ -63,6 +62,10 @@ $ source env/bin/activate
 Install dependencies:
 ```
 $ pip install -r requirements.txt
+
+Run the server:
+```
+$ python server.py
 
 
 

@@ -17,6 +17,7 @@ if have time:
     add another genre graph
     add Oauth
     test in Selenium
+    add error handling for when user clicks on a link on the main page and is not logged in
 
 11am
     scrummed
