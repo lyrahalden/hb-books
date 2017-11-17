@@ -5,7 +5,7 @@ from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
 from flask import (Flask, render_template, redirect, request, flash,
-                   session, jsonify)
+                   session, jsonify, url_for)
 
 from flask_login import LoginManager, login_user, login_required, logout_user
 
@@ -22,7 +22,7 @@ app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "hostesswiththemostest"
 #change to True if debugging
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 
 
 # Normally, if you use an undefined variable in Jinja2, it fails
@@ -36,88 +36,95 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 #sets a view for if a user tries to access a login_required route
-login_manager.login_view = "/login"
+# login_manager.login_view = "/login"
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("Please log in to access this page.")
+    return redirect(url_for('log_in'))
 
 
 @app.route('/')
 def index():
     """Homepage."""
 
-    try:
-        user = User.query.filter_by(email=session["email"]).first()
-    except KeyError:
-        return render_template('homepage.html')
+    # try:
+    #     user = User.query.filter_by(email=session["email"]).first()
+    # except KeyError:
+    #     return render_template('homepage.html')
 
-    return render_template('homepage.html', user=user)
+    return render_template('homepage.html')
 
 
 @login_manager.user_loader
 def load_user(email):
-    return User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
+    return user
 
 
-@app.route('/login')
-def log_in_page():
-    """Displays login form"""
-
-    return render_template('login.html')
-
-
-@app.route('/register')
-def register_page():
-    """Displays registration form"""
-
-    return render_template('register.html')
-
-
-@app.route("/register-form", methods=["POST"])
+@app.route("/register", methods=["GET", "POST"])
 def confirm_registration():
-    """Confirms registration"""
-    name = request.form.get("name")
-    email = request.form.get("email")
-    submittedPassword = request.form.get("password")
+    """Displays registration form if request is GET and registers user if request is POST"""
 
-    duplicates = db.session.query(User).filter_by(email=email).all()
+    if request.method == "GET":
 
-    if duplicates:
-        flash("This email is already registered. Please try again with a different email.")
-    else:
-        hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
-        new_user = User(name=name, email=email, password=hashedPassword)
-        db.session.add(new_user)
-        login_user(new_user)
-        db.session.commit()
-        flash("You have been registered and logged in! Yay!")
-        # session['email'] = email
+        return render_template('register.html')
 
-    return redirect("/")
+    elif request.method == "POST":
 
+        name = request.form.get("name")
+        email = request.form.get("email")
+        submittedPassword = request.form.get("password")
 
-@app.route("/login-form", methods=["POST"])
-def log_in():
-    """Logs a user in"""
+        duplicates = db.session.query(User).filter_by(email=email).all()
 
-    email = request.form.get("email")
-    password = request.form.get("password")
-
-    user = db.session.query(User).filter_by(email=email).first()
-
-    try:
-        user.user_id
-
-        if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
-            # session['email'] = email
-            login_user(user)
-            flash("You have been logged in!")
-            return redirect("/users/" + str(user.user_id))
+        if duplicates:
+            flash("This email is already registered. Please try again with a different email.")
         else:
-            flash("Login failed. Email or password was not correct.")
-            return redirect("/")
+            hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
+            new_user = User(name=name, email=email, password=hashedPassword)
+            db.session.add(new_user)
+            login_user(new_user)
+            db.session.commit()
+            flash("You have been registered and logged in! Yay!")
+            # session['email'] = email
 
-    except AttributeError:
-        flash("Login failed. Email or password was not correct.")
         return redirect("/")
 
+
+@app.route("/login", methods=["GET", "POST"])
+def log_in():
+    """Displays login form if request is GET and logs user in if request is POST"""
+
+    if request.method == 'GET':
+
+        return render_template('login.html')
+
+    elif request.method == 'POST':
+
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        user = db.session.query(User).filter_by(email=email).first()
+
+        try:
+            user.user_id
+
+            if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
+                # session['email'] = email
+                login_user(user, remember=True)
+                flash("You have been logged in!")
+                next = request.args.get('next')
+                return redirect(next)
+            else:
+                flash("Login failed. Email or password was not correct.")
+                return redirect("/")
+
+        except AttributeError:
+            flash("Login failed. Email or password was not correct.")
+            return redirect("/")
+# url_for("user_details", some_id=str(user.user_id))
 
 @app.route("/logout")
 @login_required
@@ -250,7 +257,7 @@ def user_details(some_id):
 
     user = User.query.get(some_id)
 
-    if user and session['email'] == user.email:
+    if user:
         genres = Genre.query.limit(3)
         return render_template("user_page.html", user=user, genres=genres)
     else:

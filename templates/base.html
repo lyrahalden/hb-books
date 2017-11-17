@@ -24,8 +24,8 @@
         <!-- <p class="navbar-text">Novel Idea</p> -->
     <nav class="navbar navbar-right">
 
-          {% if "email" in session %}
-            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/users/{{user.user_id}}">Your Profile</a></button>
+          {% if current_user.is_authenticated %}
+            <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/users/{{current_user.user_id}}">Your Profile</a></button>
             <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/logout">Log Out</a></button>
           {% else %}
             <button type="button" class="btn btn-default navbar-btn"><a class= "btn-link" href="/login">Log In</a></button>
