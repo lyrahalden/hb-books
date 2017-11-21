@@ -36,13 +36,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 #sets a view for if a user tries to access a login_required route
-# login_manager.login_view = "/login"
+login_manager.login_view = "/login"
 
 
-@login_manager.unauthorized_handler
-def unauthorized():
-    flash("Please log in to access this page.")
-    return redirect(url_for('log_in'))
+# @login_manager.unauthorized_handler
+# def unauthorized():
+#     flash("Please log in to access this page.")
+#     return redirect(url_for('log_in', next="/"), user=load_user())
 
 
 @app.route('/')
@@ -58,9 +58,8 @@ def index():
 
 
 @login_manager.user_loader
-def load_user(email):
-    user = User.query.filter_by(email=email).first()
-    return user
+def load_user(user_id):
+    return User.query.get(user_id)
 
 
 @app.route("/register", methods=["GET", "POST"])

@@ -19,23 +19,26 @@ __Backend:__ Python, Flask, PostgreSQL, SQLAlchemy, Scrapy, Sci-kit Learn <br/>
 Register for an account, log in.
 # <img src="/static/img/owl-book-172.svg">
 
-View all books, search for a book by title.
-# <img src="/static/img/read_me/books_page.png">
-# <img src="/static/img/read_me/more_books.png">
+View all books
+# <img src="/static/img/read_me/all_books.gif">
+
+Search for a book by title
+# <img src="/static/img/read_me/search.gif">
 
 View an individual book's page, rate it.
 # <img src="/static/img/read_me/indiv_book_page.png">
-
-View most popular genres.
 
 View books you have rated.
 # <img src="/static/img/read_me/prof_page.png">
 
 Favorite genres or delete favorited genres.
-# <img src="/static/img/read_me/ratings_genres.png">
+# <img src="/static/img/read_me/fav_and_rate.gif">
 
 Get a list of recommendations.
-# <img src="/static/img/read_me/recommendation.png">
+# <img src="/static/img/read_me/rec.gif">
+
+See words indicative of review polarity on Goodreads
+# <img src="/static/img/read_me/reviews.png">
 
 
 ## <a name="installation"></a>Setup/Installation ⌨️
