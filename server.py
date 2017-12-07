@@ -369,13 +369,13 @@ def rate_book():
         if rating:
             rating.score = score
             db.session.commit()
-            flash("You have updated your rating for " + book.title + " to a " + str(score) + ".")
+            flash("You have updated your rating for " + book.title + " to " + str(score) + "star(s).")
             return render_template("book_page.html", book=book, user=user, rating=rating)
         else:
             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
-            flash("You have rated " + book.title + " as a " + str(score) + ".")
+            flash("You have given " + book.title + str(score) + "star(s).")
             return render_template("book_page.html", book=book, user=user, rating=new_rating)
 
     except KeyError:
