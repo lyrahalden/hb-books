@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask import (Flask, render_template, redirect, request, flash,
                    session, jsonify, url_for)
 
-from flask_login import LoginManager, login_user, login_required, logout_user
+# from flask_login import LoginManager, login_user, login_required, logout_user
 
 from model import Book, Genre, User, UserGenre, Rating, recommend, connect_to_db, db, generate_colors
 
@@ -32,11 +32,11 @@ app.jinja_env.undefined = StrictUndefined
 
 
 #use flask-login to instantiate a login_manager and tie it to the flask app
-login_manager = LoginManager()
-login_manager.init_app(app)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
 
-#sets a view for if a user tries to access a login_required route
-login_manager.login_view = "/login"
+# #sets a view for if a user tries to access a login_required route
+# login_manager.login_view = "/login"
 
 
 # @login_manager.unauthorized_handler
@@ -49,17 +49,17 @@ login_manager.login_view = "/login"
 def index():
     """Homepage."""
 
-    # try:
-    #     user = User.query.filter_by(email=session["email"]).first()
-    # except KeyError:
-    #     return render_template('homepage.html')
+    try:
+        user = User.query.filter_by(email=session["email"]).first()
+    except KeyError:
+        return render_template('homepage.html')
 
-    return render_template('homepage.html')
+    return render_template('homepage.html', user=user)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(user_id)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -80,16 +80,16 @@ def confirm_registration():
 
         if duplicates:
             flash("This email is already registered. Please try again with a different email.")
+            return render_template("homepage.html")
         else:
             hashedPassword = bcrypt.hashpw(submittedPassword.encode('utf-8'), bcrypt.gensalt(10))
             new_user = User(name=name, email=email, password=hashedPassword)
             db.session.add(new_user)
-            login_user(new_user)
+            # login_user(new_user)
             db.session.commit()
             flash("You have been registered and logged in! Yay!")
-            # session['email'] = email
-
-        return redirect("/")
+            session['email'] = email
+            return render_template("homepage.html", user=new_user)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -111,11 +111,11 @@ def log_in():
             user.user_id
 
             if user and bcrypt.checkpw(password.encode('utf8'), user.password.encode('utf8')):
-                # session['email'] = email
-                login_user(user, remember=True)
+                session['email'] = email
+                # login_user(user, remember=True)
                 flash("You have been logged in!")
-                next = request.args.get('next')
-                return redirect(next)
+                # next = request.args.get('next')
+                return render_template("homepage.html", user=user)
             else:
                 flash("Login failed. Email or password was not correct.")
                 return redirect("/")
@@ -125,27 +125,20 @@ def log_in():
             return redirect("/")
 # url_for("user_details", some_id=str(user.user_id))
 
+
 @app.route("/logout")
-@login_required
+# @login_required
 def log_out():
     """Logs the user out"""
-    logout_user()
-    # del session['email']
+    # logout_user()
+    del session['email']
     flash("You are logged out!")
 
     return redirect("/")
 
 
-# @app.route("/users")
-# def user_list():
-#     """Show list of users."""
-
-#     users = User.query.all()
-#     return render_template("all_users.html", users=users)
-
-
 @app.route("/books")
-@login_required
+# @login_required
 def book_list():
     """Show list of books."""
 
@@ -156,7 +149,7 @@ def book_list():
 
 
 @app.route("/reviews")
-@login_required
+# @login_required
 def review_page():
     """Make page for reviews graph"""
 
@@ -197,7 +190,7 @@ def reviews():
 
 
 @app.route("/genres")
-@login_required
+# @login_required
 def all_genres():
     """Show all genres in db"""
 
@@ -250,13 +243,13 @@ def search():
 
 
 @app.route("/users/<some_id>")
-@login_required
+# @login_required
 def user_details(some_id):
     """Shows user details."""
 
     user = User.query.get(some_id)
 
-    if user:
+    if user and session['email'] == user.email:
         genres = Genre.query.limit(3)
         return render_template("user_page.html", user=user, genres=genres)
     else:
@@ -265,7 +258,7 @@ def user_details(some_id):
 
 
 @app.route("/books/<some_id>")
-@login_required
+# @login_required
 def book_details(some_id):
     """Shows book details."""
 
@@ -375,13 +368,13 @@ def rate_book():
             rating.score = score
             db.session.commit()
             flash("You have updated your rating for " + book.title + " to a " + score + ".")
-            return redirect("/books/" + book_id)
+            return redirect("/books/" + book_id, user=user)
         else:
             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
             flash("You have rated " + book.title + " as a " + score + ".")
-            return redirect("/books/" + book_id)
+            return redirect("/books/" + book_id, user=user)
 
     except KeyError:
         flash("Not a valid user logged in!")
@@ -397,6 +390,6 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
     app.run(port=5000, host='0.0.0.0')
