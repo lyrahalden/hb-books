@@ -26,21 +26,21 @@ class User(db.Model):
         """Provide helpful representation when printed."""
         return "<User user_id=%s name=%s>" % (self.user_id, self.name)
 
-    def is_authenticated(self):
-        """required for flask_login"""
-        return True
+    # def is_authenticated(self):
+    #     """required for flask_login"""
+    #     return True
 
-    def is_active(self):
-        """required for flask_login"""
-        return True
+    # def is_active(self):
+    #     """required for flask_login"""
+    #     return True
 
-    def is_anonymous(self):
-        """required for flask_login"""
-        return False
+    # def is_anonymous(self):
+    #     """required for flask_login"""
+    #     return False
 
-    def get_id(self):
-        """required for flask_login"""
-        return str(self.user_id)
+    # def get_id(self):
+    #     """required for flask_login"""
+    #     return str(self.user_id)
 
 
 class UserGenre(db.Model):

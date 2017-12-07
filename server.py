@@ -276,7 +276,9 @@ def get_three_genres():
     """Returns 3 genres from the db"""
 
     counter = request.form.get("counter")
-    genres = Genre.query.limit(3).offset(counter).all()
+
+    if counter >= 0:
+        genres = Genre.query.limit(3).offset(counter).all()
 
     json_genres = {}
 
@@ -355,7 +357,7 @@ def rate_book():
     """Passes rating for book"""
 
     book_id = request.form.get("book")
-    score = request.form.get("score")
+    score = int(request.form.get("score"))
     book = Book.query.get(book_id)
 
     try:
@@ -367,14 +369,14 @@ def rate_book():
         if rating:
             rating.score = score
             db.session.commit()
-            flash("You have updated your rating for " + book.title + " to a " + score + ".")
-            return redirect("/books/" + book_id, user=user)
+            flash("You have updated your rating for " + book.title + " to a " + str(score) + ".")
+            return render_template("book_page.html", book=book, user=user, rating=rating)
         else:
             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
-            flash("You have rated " + book.title + " as a " + score + ".")
-            return redirect("/books/" + book_id, user=user)
+            flash("You have rated " + book.title + " as a " + str(score) + ".")
+            return render_template("book_page.html", book=book, user=user, rating=new_rating)
 
     except KeyError:
         flash("Not a valid user logged in!")

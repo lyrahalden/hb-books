@@ -34,28 +34,33 @@
     </ul></div></div>
 
 {% endif %}
-<br><br>
 <button type="button" class="btn btn-default"><a class="link" href="/books">Go back to main books page</a></button>
 </div>
 <div class="col-md-4">
 <button type="button" class="btn btn-default"><a class="link" href = "/reviews">Reviews:</a></button>
 {% if rating %}
-<div class="rating">
-    You have given this book a {{rating.score}}
-    </div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h3>You have given this book a {{rating.score}}</h3>
+    </div></div>
 {% endif %}
-<br>
+<div class="panel panel-default">
+<div class="panel-body">
+<form class="rating-form" action="/rate" method=POST>
 <div class="form-group">
-  <label for="sel1">Enter your rating as a number from 1 to 5, where 1 is the lowest score</label>
-  <select class="form-control" id="sel1">
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
+  <label for="sel1"><p>Enter your rating as a number from 1 to 5, where 1 is the lowest score</p></label>
+  <select class="form-control" name='score' id="sel1">
+    <option value='1'>1</option>
+    <option value='2'>2</option>
+    <option value='3'>3</option>
+    <option value='4'>4</option>
+    <option value='5'>5</option>
   </select>
+  <input type="hidden" name="book" value={{ book.book_id }}>
   <input type="submit" value="Submit">
 </div>
+</form>
+</div></div>
 <!-- <form class="rating-form" action="/rate" method=POST>
   Enter your rating as a number from 1 to 5, where 1 is the lowest score:<br>
   <input type="text" name="score">

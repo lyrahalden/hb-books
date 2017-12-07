@@ -25,7 +25,12 @@ $('#get-genre-button').on('click', getGenres);
 
 $("#back-genre-button").on('click', function() {
     counter -= 3;
-    $.post('/genres', {"counter": counter}, showGenres)
+    if (counter >= 0) {
+        $.post('/genres', {"counter": counter}, showGenres);
+    }
+    else {
+        alert("Hit the More button to go forward.");
+    }
 
 });
 
@@ -65,8 +70,8 @@ $('#faved-genres').on('click', ".faved-genres", function() {
 
 function displayRec(results){
     var books = results;
-    // if (books === {}){
-    //     $('#rec').html("No recommendations yet. Please favorite more genres!");
+    // if (books.length === 0){
+    //     alert("No recommendations yet. Please favorite more genres!");
     // }
     var book_recs = "";
     $.each(books, function(key, value) {
