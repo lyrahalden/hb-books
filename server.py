@@ -89,7 +89,8 @@ def confirm_registration():
             db.session.commit()
             flash("You have been registered and logged in! Yay!")
             session['email'] = email
-            return render_template("homepage.html", user=new_user)
+            genres = Genre.query.limit(3)
+            return render_template("user_page.html", user=new_user, genres=genres)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -142,7 +143,12 @@ def log_out():
 def book_list():
     """Show list of books."""
 
-    user = User.query.filter_by(email=session["email"]).first()
+    try:
+        user = User.query.filter_by(email=session["email"]).first()
+    except KeyError:
+        flash("Please login or register.")
+        return redirect("/")
+
     books = Book.query.order_by(desc('avg_rating')).all()
 
     return render_template("all_books.html", books=books, user=user)
@@ -153,7 +159,11 @@ def book_list():
 def review_page():
     """Make page for reviews graph"""
 
-    user = User.query.filter_by(email=session["email"]).first()
+    try:
+        user = User.query.filter_by(email=session["email"]).first()
+    except KeyError:
+        flash("Please login or register.")
+        return redirect("/")
 
     return render_template("reviews_page.html", user=user)
 
@@ -194,7 +204,12 @@ def reviews():
 def all_genres():
     """Show all genres in db"""
 
-    user = User.query.filter_by(email=session["email"]).first()
+    try:
+        user = User.query.filter_by(email=session["email"]).first()
+    except KeyError:
+        flash("Please login or register.")
+        return redirect("/")
+
     genres = Genre.query.order_by('name').all()
     return render_template("all_genres.html", genres=genres, user=user)
 
@@ -395,3 +410,4 @@ if __name__ == "__main__":
     # DebugToolbarExtension(app)
 
     app.run(port=5000, host='0.0.0.0')
+
