@@ -375,7 +375,7 @@ def rate_book():
             new_rating = Rating(book_id=book_id, user_id=user_id, score=score)
             db.session.add(new_rating)
             db.session.commit()
-            flash("You have given " + book.title + str(score) + " star(s).")
+            flash("You have given " + book.title + " " + str(score) + " star(s).")
             return render_template("book_page.html", book=book, user=user, rating=new_rating)
 
     except KeyError:

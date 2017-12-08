@@ -14,7 +14,7 @@
 <div class="container" id="rec"></div>
 <br>
 <div class="container">
-<h2 class="subtitle">Your ratings!</h2>
+<h2 class="subtitle">Books you've rated!</h2>
 {% for rating in user.ratings if user.ratings%}
     <button type="button" class="btn btn-default"><a class="link" href="/books/{{ rating.book.book_id }}">{{ rating.book.title }}</a>: {{ rating.score }} stars</button>
 {% endfor %}
