@@ -133,10 +133,21 @@ def recommend(user):
 
     book_genre_dict = {}
 
-    # creates a dictionary where the key is a book object and the value is a list of genres that book belongs to
-    #all of those genres are genres the user has favorited
+    recommended_genres = user.genres
 
-    for genre in user.genres:
+    # add genres belonging to books the user has rated highly to into a list of genres the user has favorited
+    # this is in order to take the user's ratings into account
+    if user.ratings:
+        for rating in user.ratings:
+            if rating.score == 4 or rating.score == 5:
+                if len(rating.book.genres) <= 1:
+                    recommended_genres.append(rating.book.genres)
+                else:
+                    recommended_genres.extend(rating.book.genres)
+
+    # creates a dictionary where the key is a book object and the value is a list of genres which that book belongs to
+
+    for genre in recommended_genres:
         for book in genre.books:
             if book in book_genre_dict:
                 book_genre_dict[book].append(genre)
@@ -145,15 +156,13 @@ def recommend(user):
 
     list_of_recommendations = []
 
-    # #takes user's ratings of books into account
-    # if user.ratings:
-    #     for r in user.ratings:
-    #         if r.score == 4 or r.score == 5:
-    #             list_of_recommendations.append(r.book)
-
     for book in book_genre_dict.keys():
+        # if there are books which have ALL the genres a user has favorited,
+        # then add those books to the rec list
         if set(user.genres) <= set(book.genres):
             list_of_recommendations.append(book)
+        # if there are books that have two or more genres in common with the user's list of genres
+        # add those books to the rec list as well
         elif len(set(user.genres) & set(book.genres)) > 2:
             list_of_recommendations.append(book)
 
